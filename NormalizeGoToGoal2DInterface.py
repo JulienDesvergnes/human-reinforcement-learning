@@ -699,6 +699,12 @@ def simuPostLearning(agent):
             break
     return score_cumul
 
+class HRLView(Frame):
+	"""docstring for HRLVIEW"""
+	def __init__(self, fenetre, **kwargs):
+		Frame.__init__(self, fenetre, width=768, height=576, **kwargs)
+		
+
 class Interface(Frame):
     
     """Notre fenêtre principale.
@@ -827,7 +833,7 @@ class Interface(Frame):
         Label(Frame19, text="Launch Traning",bg="white").pack(padx=10, pady=10)
         Label(Frame20, text="Learning list",bg="white").pack(padx=10, pady=10)
         Label(Frame21, text="Prediction Map",bg="white").pack(padx=10, pady=10)
-        Label(Frame24, text="HRL Screen",bg="white").pack(padx=10, pady=10)
+        Label(Frame24, text="HRL Screen",bg="mistyrose2").pack(padx=10, pady=10)
 
         # Descriptif agent
         s = "State size / Input size = " + str(self.env.state_size) + " \n" + \
@@ -943,6 +949,17 @@ class Interface(Frame):
 
         self.canvasPredictionMap = env.buildCanevasPredictionMap(Frame22, self.agent)
         self.canvasPredictionMap.pack()
+
+        self.OpenHRLView = Button(Frame24, text ='OpenHRLView', command=self.OpenHRLViewAction)
+        self.OpenHRLView.pack()
+
+    def OpenHRLViewAction(self):
+    	self.HRLFenetre = Tk()
+    	self.HRLFenetre.title('HRL View')
+
+    	self.HRLFrame = HRLView(self.HRLFenetre)
+    	self.HRLFrame.mainloop()
+
 
     def loadWeightAction(self):
         self.agent.load("Weights_Model.wm")

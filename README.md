@@ -51,3 +51,8 @@ Voici quelques commandes pour récupérer le dépôt git et faire des ajouts :
 	5. git push (propage les commits locaux sur le serveur distant.)
 4. Commande utile : git status (résume l'état du dépôt local.)
 
+## Semaine du 03/02/2020
+
+Objectifs :
+1. Implémenter l'interface du HRL
+2. Implémenter une première version du HRL (OUI,NON,JSP)

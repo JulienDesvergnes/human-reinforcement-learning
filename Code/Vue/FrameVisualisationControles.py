@@ -39,9 +39,6 @@ class FrameVisualisationControles(Frame):
         # On fait un pas de simulation
         next_state, reward, done = self.env.step(numeroAction)
 
-        # On mets a jour les recompenses cumulees
-        #self.MajRewardCumules(reward)
-
         # Mise a jour des donnees de la frame de visualisation des etats
         EtatAvant = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatAvant
         EtatApres = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatApres
@@ -55,11 +52,13 @@ class FrameVisualisationControles(Frame):
 
         # On met a jour l'affichage graphique
         self.framePrincipale.FrameVisualisation.UpdateCanvas(numeroAction)
+        self.framePrincipale.FrameEcranControle.AjouteScore(reward)
+        self.framePrincipale.FrameEcranControle.Update()
 
         # On ajoute cette action a la liste des actions realisees sur cette simulation
-        #self.actionSequence.append(numeroAction)
+        self.framePrincipale.FrameEcranControle.AccumulateurActions.append(numeroAction)
 
         # Si la simulation est finie, on enregistre celle ci dans la liste des simus et on reset le simulateur
-        #if (done and not self.inReplayMode):
-            #self.replayGamesList.insert(END,self.stringfromActionSequence(False))
-            #self.resetRender()
+        if (done and not self.framePrincipale.FrameEcranControle.inSimulation):
+            self.framePrincipale.FrameEcranControle.AddSimuInList()
+            self.framePrincipale.FrameEcranControle.ResetAction()

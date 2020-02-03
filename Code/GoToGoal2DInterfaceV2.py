@@ -1,17 +1,10 @@
-import numpy as np
 import gym
-from copy import deepcopy
 import tensorflow as tf
 import matplotlib.pyplot as plt
 from tkinter import *
 from tkinter.messagebox import *
 import matplotlib
 matplotlib.use("TkAgg")
-from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
-from matplotlib.backends.backend_qt4agg import NavigationToolbar2QT
-from matplotlib.figure import Figure
-import matplotlib.animation as animation
-import time
 import os
 from PIL import ImageGrab
 
@@ -151,70 +144,14 @@ class Interface(Frame):
 
 
         # Ajout de labels
-        Label(Frame2, text="Simulation").pack(padx=10, pady=10)
-        Label(Frame6, text="Environment : " + env.name,bg="white").pack(padx=10, pady=10)
-        Label(Frame7, text="Visualization : " + env.name,bg="white").pack(padx=10, pady=10)
-        Label(Frame8, text="Control Movement : ",bg="white").pack(padx=10, pady=10)
-        Label(Frame9, text="Evolution of State",bg="white").pack(padx=10, pady=10)
-        Label(Frame10, text="Previous state",bg="white").pack(padx=10, pady=10)
-        Label(Frame11, text="Current state",bg="white").pack(padx=10, pady=10)
-        Label(Frame12, text="→→ Action Performed →→",bg="white").pack(padx=10, pady=10)
-        Label(self.Frame13, text="Cumulative Reward",bg="white").pack(padx=10, pady=10)
-        Label(Frame14, text="Control Screen",bg="seashell3").pack(padx=10, pady=10)
-        Label(Frame15, text="Simulation list",bg="white").pack(padx=10, pady=10)
-        Label(Frame16, text="Reset Simulation",bg="white").pack(padx=10, pady=10)
         Label(Frame17, text="RL Screen",bg="mistyrose3").pack(padx=10, pady=10)
         Label(Frame18, text="Predict Action From State",bg="white").pack(padx=10, pady=10)
         Label(Frame19, text="Launch Traning",bg="white").pack(padx=10, pady=10)
         Label(Frame20, text="Learning list",bg="white").pack(padx=10, pady=10)
         Label(Frame21, text="Prediction Map",bg="white").pack(padx=10, pady=10)
         Label(Frame24, text="HRL Screen",bg="mistyrose2").pack(padx=10, pady=10)
-
-        # Visualisation Env
-        self.canvas = env.buildCanevas(Frame7)
-        self.canvas0 = self.canvas
-        self.canvas.pack()
-
-        ### Simulation
-        # Touches directionnelles
-        self.upButton = Button(Frame8, text="UP ↑", command=self.UpAction)
-        self.upButton.pack(side="left")
-
-        self.downButton = Button(Frame8, text="DOWN ↓", command=self.DownAction)
-        self.downButton.pack(side="left")
-
-        self.leftButton = Button(Frame8, text="LEFT ←", command=self.LeftAction)
-        self.leftButton.pack(side="left")
-
-        self.rightButton = Button(Frame8, text="RIGHT →", command=self.RightAction)
-        self.rightButton.pack(side="left")
         
-        self.previousStateLabel = StringVar()
-        self.previousStateLabel.set("                                       ")
-        self.labelps = Label(Frame10, textvariable=self.previousStateLabel, bg="white", justify="left")
-        self.labelps.pack()
 
-        self.currentStateLabel = StringVar()
-        self.currentStateLabel.set("Position du mobile de déplacement : (" + str(env.state.x + 1) + ", " + str(env.state.y + 1) + ")")
-        self.labelcps = Label(Frame11, textvariable=self.currentStateLabel, bg="white", justify="left")
-        self.labelcps.pack()
-
-        self.actionperformedlabel = StringVar()
-        self.actionperformedlabel.set("No action FTM")
-        self.labelapl = Label(Frame12, textvariable=self.actionperformedlabel, bg="white", justify="left")
-        self.labelapl.pack()
-
-        self.rewardObtenue = StringVar()
-        self.rewardObtenue.set("No reward FTM")
-        self.labelrwl = Label(Frame12, textvariable=self.rewardObtenue, bg="white", justify="left")
-        self.labelrwl.pack()
-
-        self.figurecr = Figure(figsize=(4,3), dpi=100)
-        self.figuresubplotcr = self.figurecr.add_subplot(111)
-
-        self.indicesFigures = [0]
-        self.scoreCumule = [0]
-        self.actionSequence = []
 
         self.canvasFigure = FigureCanvasTkAgg(self.figurecr, self.Frame13)
         self.canvasFigure.get_tk_widget().pack(side=BOTTOM, fill=BOTH, expand=True) 
@@ -358,15 +295,6 @@ class Interface(Frame):
             s += (int2Action2String1Char(i))
         return s
 
-    def UpAction(self):
-        self.MajLabels(2)
-    def DownAction(self):
-        self.MajLabels(3)
-    def LeftAction(self):
-        self.MajLabels(0)
-    def RightAction(self):
-        self.MajLabels(1)
-
     def launchTrainingAction(self):
 
         state_size = self.env.state_size
@@ -455,6 +383,5 @@ if __name__ == "__main__":
     action_size = env_.action_size
     agent_ = DQNAgent(state_size, action_size)
 
-    # interface = Interface(fenetre, env_, agent_)
     FramePrincipale = FramePrincipale(fenetre, env_, agent_)
     FramePrincipale.mainloop()

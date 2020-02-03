@@ -8,7 +8,7 @@ class FrameDescription(Frame):
         self.framePrincipale = framePrincipale
 
         self.FrameDescription = LabelFrame(frame, text = "Description", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameDescription.pack(side=LEFT, padx=5, pady=5, fill="both", expand="yes")
+        self.FrameDescription.pack(side=LEFT, padx=5, pady=5)
 
         self.FrameDescriptionAgent = LabelFrame(self.FrameDescription, text = "Agent", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameDescriptionAgent.pack(side=TOP, padx=2, pady=2)

@@ -10,7 +10,7 @@ class FrameVisualisation(Frame):
         self.framePrincipale = framePrincipale
 
         self.FrameSimulation = LabelFrame(frame, text = "Simulation : " + self.env.name, bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameSimulation.pack(side=LEFT, padx=5, pady=5, fill="both", expand="yes")
+        self.FrameSimulation.pack(side=LEFT, padx=5, pady=5)
 
         self.FrameVisualisationEnvironnement = LabelFrame(self.FrameSimulation, text = "Environnement", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameVisualisationEnvironnement.pack(side=TOP, padx=2, pady=2)
@@ -84,6 +84,19 @@ class FrameVisualisation(Frame):
         return canvas, mobile
 
     def UpdateCanvas(self,numeroAction):
+        gridSize = self.env.state.grid_size
+        x0 = 1 + (self.env.state.x) * (self.CanvasW + 1) / gridSize
+        y0 = 1 + (self.env.state.y) * (self.CanvasH + 1) / gridSize
+        if (self.env.state.x == 0):
+            x0 = 3 + (self.state.x) * (self.CanvasW + 1) / gridSize
+        if (self.env.state.y == 0):
+            y0 = 3 + (self.env.state.y) * (self.CanvasH + 1) / gridSize
+        x1 = (self.env.state.x + 1) * (self.CanvasW + 1) / gridSize
+        y1 = (self.env.state.y + 1) * (self.CanvasH + 1) / gridSize
+
+        self.canvas.coords(self.mobile,x0,y0,x1,y1)
+
+    def ResetCanvas(self):
         gridSize = self.env.state.grid_size
         x0 = 1 + (self.env.state.x) * (self.CanvasW + 1) / gridSize
         y0 = 1 + (self.env.state.y) * (self.CanvasH + 1) / gridSize

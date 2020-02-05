@@ -3,6 +3,7 @@ from Vue.FrameDescription import FrameDescription
 from Vue.FrameVisualisation import FrameVisualisation
 from Vue.FrameEcranControle import FrameEcranControle
 from Vue.FrameRL import FrameRL
+from Vue.FrameHRL import FrameHRL
 
 class FramePrincipale(Frame):
     
@@ -12,6 +13,9 @@ class FramePrincipale(Frame):
         self.env = env
         
         fenetre['bg']='white'
+
+        #Frame de HRL
+        self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
 
         # Frame de description
         self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)

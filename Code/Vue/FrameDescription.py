@@ -16,7 +16,7 @@ class FrameDescription(Frame):
         self.FrameDescriptionReseau = LabelFrame(self.FrameDescription, text = "Reseau", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameDescriptionReseau.pack(side=TOP, padx=2, pady=2)
 
-        self.FrameDescriptionEnv = LabelFrame(self.FrameDescription, text = "Reseau", bg="white", borderwidth=2, relief=GROOVE)
+        self.FrameDescriptionEnv = LabelFrame(self.FrameDescription, text = "Environnement", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameDescriptionEnv.pack(side=TOP, padx=2, pady=2)
 
         # Descriptif agent

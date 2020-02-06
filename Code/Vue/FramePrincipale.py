@@ -18,7 +18,7 @@ class FramePrincipale(Frame):
         self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
 
         # Frame de description
-        self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
+        #self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
 
         # Frame de visualisation
         self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)

@@ -199,6 +199,7 @@ class FrameRL(Frame):
                     self.canvasPredictionMap.create_line(mx,y1 - 1,bx1 + 5,by1 - 5 , fill = 'yellow')
                     self.canvasPredictionMap.create_line(mx,y1 - 1,bx2 - 5,by2 - 5, fill = 'yellow')
 
+    #méthode appelée lorsqu'on clique sur le bouton launch training de la frame RL
     def launchTrainingAction(self):
 
         state_size = self.env.state_size
@@ -219,7 +220,10 @@ class FrameRL(Frame):
 
             for time in range(200):
 
+                # agent execute l'action en fonction de l'état reçu en argument
                 action = self.agent.act(state)
+                # ligne à changer pour HRL avec notre nouvelle fonction step qui correspondra a updateAll() 
+                # avec choix de l'utilisateur dans un input
                 next_state, reward, done = self.env.step(action)
 
                 next_state = next_state * (1 / float(self.env.state.grid_size))

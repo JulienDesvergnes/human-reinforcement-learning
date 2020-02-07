@@ -88,7 +88,7 @@ class FrameVisualisation(Frame):
         x0 = 1 + (self.env.state.x) * (self.CanvasW + 1) / gridSize
         y0 = 1 + (self.env.state.y) * (self.CanvasH + 1) / gridSize
         if (self.env.state.x == 0):
-            x0 = 3 + (self.state.x) * (self.CanvasW + 1) / gridSize
+            x0 = 3 + (self.env.state.x) * (self.CanvasW + 1) / gridSize
         if (self.env.state.y == 0):
             y0 = 3 + (self.env.state.y) * (self.CanvasH + 1) / gridSize
         x1 = (self.env.state.x + 1) * (self.CanvasW + 1) / gridSize

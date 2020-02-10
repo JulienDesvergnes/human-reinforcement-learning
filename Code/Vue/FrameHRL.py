@@ -21,13 +21,37 @@ class FrameHRL(Frame):
         LaunchHRLButton = Button(self.FrameHumanDecision, text='Launch Human Learning', command = self.launchHRLAction)
         LaunchHRLButton.grid(row=1, column=1, sticky="nsew")
 
+        self.FrameReplayLearningList = LabelFrame(self.FrameHumanDecision, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
+        self.FrameReplayLearningList.config(width=250, height=250)
+        #self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True) #, fill = BOTH)
+        #self.FrameReplayLearningList.pack_propagate(0)
+
+        ## ReplayLearningList
+        self.replayLearningList = Listbox(self.FrameReplayLearningList)
+        self.replayLearningList.pack(fill =BOTH)
+        self.replayLearningList.pack_propagate(0)
+        self.replayLearningList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
+
+    def onselect(self,evt):
+        w = evt.widget
+        if (len(w.curselection()) > 0):
+            index = int(w.curselection()[0])
+            value = w.get(index)
+            self.replaySimulationQuestion(value)
+
+    def stringfromAccumulateurActions(self):
+        s = "Sim " + str(self.replayLearningList.size()) + " : "
+        for i in self.framePrincipale.FrameEcranControle.AccumulateurActions:
+            s += (int2Action2String1Char(i))
+        return s
+
     def launchHRLAction(self) : 
         state_size = self.env.state_size
         self.framePrincipale.FrameEcranControle.ResetAction()
 
         done = False
         batch_size = 2
-        Episodes = 5
+        Episodes = 10
         scores_app = []
         scores_evo = []
 
@@ -55,14 +79,15 @@ class FrameHRL(Frame):
                 score_cumul += reward
                 state = next_state
 
-                #if done:
-                    #self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
-                    #print("episode: {}/{}, score: {}, e: {:.5}"
-                    #       .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
-                    #break
-                #if len(self.agent.memory) > batch_size:
-                #    self.agent.replay(batch_size)
-                #    self.agent.memory.clear()
+                if done:
+                    self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
+                    print("episode: {}/{}, score: {}, eps: {:.5}"
+                           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
+                    break
+                if len(self.agent.memory) > batch_size:
+                    print("Apprentissage")
+                    self.agent.replay(batch_size)
+                    self.agent.memory.clear()
             scores_app.append(score_cumul)
             #scores_evo.append(simuPostLearning(self.agent))
 
@@ -83,7 +108,7 @@ class FrameHRL(Frame):
         switcher={
             0: 0,
             1: 2 / 200,
-            2: -2 / 200
+            2: -10 / 200
         }
         return switcher.get(i,"Invalid reward")
   
@@ -103,7 +128,6 @@ class FrameHRL(Frame):
 
         # On met a jour l'affichage graphique
         self.framePrincipale.FrameVisualisation.UpdateCanvas(numeroAction)
-                    #self.framePrincipale.FrameEcranControle.AjouteScore(reward)
         self.framePrincipale.FrameEcranControle.Update()
 
         # On ajoute cette action a la liste des actions realisees sur cette simulation
@@ -115,7 +139,7 @@ class FrameHRL(Frame):
             self.framePrincipale.FrameEcranControle.ResetAction()
 
         # demande à l'utilisateur de juger l'action
-        rewardHRL = int(input("Juger l'action : 1 : bien, 0 : je ne sais pas, -1 : nul"))
+        rewardHRL = int(input("Juger l'action : 1 : bien, 0 : je ne sais pas, 2 : nul"))
         rewardHRLNorm = self.switchReward(rewardHRL)
         reward = reward + rewardHRLNorm
         

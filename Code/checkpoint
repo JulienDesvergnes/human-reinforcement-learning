@@ -1,0 +1,2 @@
+model_checkpoint_path: "Weights_Model.wm"
+all_model_checkpoint_paths: "Weights_Model.wm"

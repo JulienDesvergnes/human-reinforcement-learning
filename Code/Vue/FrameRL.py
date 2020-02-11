@@ -3,6 +3,7 @@ import os
 from tkinter.messagebox import *
 import numpy as np
 from Modele.Environnement.Action import int2Action2String1Char
+import matplotlib.pyplot as plt
 
 class FrameRL(Frame):
     
@@ -199,15 +200,33 @@ class FrameRL(Frame):
                     self.canvasPredictionMap.create_line(mx,y1 - 1,bx1 + 5,by1 - 5 , fill = 'yellow')
                     self.canvasPredictionMap.create_line(mx,y1 - 1,bx2 - 5,by2 - 5, fill = 'yellow')
 
-    #méthode appelée lorsqu'on clique sur le bouton launch training de la frame RL
+    def simuPostLearning(self, agent):
+        self.env.reset()
+        state_size = self.env.state_size
+        action_size = self.env.action_size
+        #state = np.array([env.state.grid_size, env.state.x, env.state.y, env.state.goalx, env.state.goaly, env.state.bombx, env.state.bomby])
+        state = np.array([self.env.state.x / float(self.env.state.grid_size), self.env.state.y/ float(self.env.state.grid_size), self.env.state.goalx/ float(self.env.state.grid_size), self.env.state.goaly/ float(self.env.state.grid_size)])
+        state = np.reshape(state,[1,4])
+        score_cumul = 0
+        for time in range(200):
+            act_values = agent.model.predict(state)
+            action = np.argmax(act_values[0])
+            next_state, reward, done = self.env.step(action)
+            score_cumul += reward
+            state = next_state * (1/self.env.state.grid_size)
+            state = np.reshape(state,[1,4])
+            if done:
+                break
+        return score_cumul
+
     def launchTrainingAction(self):
 
         state_size = self.env.state_size
         self.framePrincipale.FrameEcranControle.ResetAction()
 
         done = False
-        batch_size = 2
-        Episodes = 5
+        batch_size = 3
+        Episodes = 20
         scores_app = []
         scores_evo = []
 
@@ -220,10 +239,7 @@ class FrameRL(Frame):
 
             for time in range(200):
 
-                # agent execute l'action en fonction de l'état reçu en argument
                 action = self.agent.act(state)
-                # ligne à changer pour HRL avec notre nouvelle fonction step qui correspondra a updateAll() 
-                # avec choix de l'utilisateur dans un input
                 next_state, reward, done = self.env.step(action)
 
                 next_state = next_state * (1 / float(self.env.state.grid_size))
@@ -245,7 +261,7 @@ class FrameRL(Frame):
                     self.agent.replay(batch_size)
                     self.agent.memory.clear()
             scores_app.append(score_cumul)
-            #scores_evo.append(simuPostLearning(self.agent))
+            scores_evo.append(self.simuPostLearning(self.agent))
 
 
             #if(e % 15 == 0):
@@ -257,5 +273,5 @@ class FrameRL(Frame):
         except:
             showinfo('Not OK', 'Failed at saving weight !')
 
-        #plt.plot(scores_evo, 'b+')    
-        #plt.show()   
+        plt.plot(scores_evo, 'b+')    
+        plt.show()   

@@ -21,6 +21,24 @@ class FrameHRL(Frame):
         LaunchHRLButton = Button(self.FrameHumanDecision, text='Launch Human Learning', command = self.launchHRLAction)
         LaunchHRLButton.grid(row=1, column=1, sticky="nsew")
 
+
+
+
+        #self.FrameRenforcement = LabelFrame(frame, text = "Renforcement Classique", bg="white", borderwidth=2, relief=GROOVE)
+        #self.FrameRenforcement.pack(side=LEFT, padx=5, pady=5)
+
+        #self.FrameReplayLearningList = LabelFrame(self.FrameRenforcement, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
+        #self.FrameReplayLearningList.config(width=250, height=250)
+        #self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True, fill = BOTH)
+        #self.FrameReplayLearningList.pack_propagate(0)
+
+        ## ReplayLearningList
+        #self.replayLearningList = Listbox(self.FrameReplayLearningList)
+        #self.replayLearningList.pack(fill =BOTH)
+        #self.replayLearningList.pack_propagate(0)
+        #self.replayLearningList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
+
+
     def launchHRLAction(self) : 
         state_size = self.env.state_size
         self.framePrincipale.FrameEcranControle.ResetAction()
@@ -56,15 +74,15 @@ class FrameHRL(Frame):
                 state = next_state
 
                 #if done:
-                    #self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
-                    #print("episode: {}/{}, score: {}, e: {:.5}"
-                    #       .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
-                    #break
-                #if len(self.agent.memory) > batch_size:
-                #    self.agent.replay(batch_size)
-                #    self.agent.memory.clear()
+                #    self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
+                #    print("episode: {}/{}, score: {}, e: {:.5}"
+                #           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
+                #    break
+                if len(self.agent.memory) > batch_size:
+                    self.agent.replay(batch_size)
+                    self.agent.memory.clear()
             scores_app.append(score_cumul)
-            #scores_evo.append(simuPostLearning(self.agent))
+            scores_evo.append(simuPostLearning(self.agent))
 
 
             #if(e % 15 == 0):

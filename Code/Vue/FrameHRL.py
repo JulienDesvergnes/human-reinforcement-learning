@@ -21,25 +21,6 @@ class FrameHRL(Frame):
         LaunchHRLButton = Button(self.FrameHumanDecision, text='Launch Human Learning', command = self.launchHRLAction)
         LaunchHRLButton.grid(row=1, column=1, sticky="nsew")
 
-<<<<<<< HEAD
-
-
-
-        #self.FrameRenforcement = LabelFrame(frame, text = "Renforcement Classique", bg="white", borderwidth=2, relief=GROOVE)
-        #self.FrameRenforcement.pack(side=LEFT, padx=5, pady=5)
-
-        #self.FrameReplayLearningList = LabelFrame(self.FrameRenforcement, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
-        #self.FrameReplayLearningList.config(width=250, height=250)
-        #self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True, fill = BOTH)
-        #self.FrameReplayLearningList.pack_propagate(0)
-
-        ## ReplayLearningList
-        #self.replayLearningList = Listbox(self.FrameReplayLearningList)
-        #self.replayLearningList.pack(fill =BOTH)
-        #self.replayLearningList.pack_propagate(0)
-        #self.replayLearningList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
-
-=======
         self.FrameReplayLearningList = LabelFrame(self.FrameHumanDecision, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameReplayLearningList.config(width=250, height=250)
         #self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True) #, fill = BOTH)
@@ -63,7 +44,6 @@ class FrameHRL(Frame):
         for i in self.framePrincipale.FrameEcranControle.AccumulateurActions:
             s += (int2Action2String1Char(i))
         return s
->>>>>>> 91cd40f7181252fd8d6125dfb081d81473c4f15c
 
     def launchHRLAction(self) : 
         state_size = self.env.state_size
@@ -99,22 +79,12 @@ class FrameHRL(Frame):
                 score_cumul += reward
                 state = next_state
 
-<<<<<<< HEAD
                 #if done:
                 #    self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
                 #    print("episode: {}/{}, score: {}, e: {:.5}"
                 #           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
                 #    break
                 if len(self.agent.memory) > batch_size:
-=======
-                if done:
-                    self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
-                    print("episode: {}/{}, score: {}, eps: {:.5}"
-                           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
-                    break
-                if len(self.agent.memory) > batch_size:
-                    print("Apprentissage")
->>>>>>> 91cd40f7181252fd8d6125dfb081d81473c4f15c
                     self.agent.replay(batch_size)
                     self.agent.memory.clear()
             scores_app.append(score_cumul)

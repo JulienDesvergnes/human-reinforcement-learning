@@ -226,7 +226,7 @@ class FrameRL(Frame):
 
         done = False
         batch_size = 2
-        Episodes = 400
+        Episodes = 100
         scores_app = []
         scores_evo = []
 

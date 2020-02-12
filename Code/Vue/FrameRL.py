@@ -225,8 +225,8 @@ class FrameRL(Frame):
         self.framePrincipale.FrameEcranControle.ResetAction()
 
         done = False
-        batch_size = 3
-        Episodes = 20
+        batch_size = 2
+        Episodes = 400
         scores_app = []
         scores_evo = []
 

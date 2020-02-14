@@ -45,6 +45,25 @@ class FrameHRL(Frame):
             s += (int2Action2String1Char(i))
         return s
 
+    def simuPostLearning(self, agent):
+        self.env.reset()
+        state_size = self.env.state_size
+        action_size = self.env.action_size
+        #state = np.array([env.state.grid_size, env.state.x, env.state.y, env.state.goalx, env.state.goaly, env.state.bombx, env.state.bomby])
+        state = np.array([self.env.state.x / float(self.env.state.grid_size), self.env.state.y/ float(self.env.state.grid_size), self.env.state.goalx/ float(self.env.state.grid_size), self.env.state.goaly/ float(self.env.state.grid_size)])
+        state = np.reshape(state,[1,4])
+        score_cumul = 0
+        for time in range(200):
+            act_values = agent.model.predict(state)
+            action = np.argmax(act_values[0])
+            next_state, reward, done = self.env.step(action)
+            score_cumul += reward
+            state = next_state * (1/self.env.state.grid_size)
+            state = np.reshape(state,[1,4])
+            if done:
+                break
+        return score_cumul
+
     def launchHRLAction(self) : 
         state_size = self.env.state_size
         self.framePrincipale.FrameEcranControle.ResetAction()
@@ -79,16 +98,16 @@ class FrameHRL(Frame):
                 score_cumul += reward
                 state = next_state
 
-                #if done:
+                if done:
                 #    self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
-                #    print("episode: {}/{}, score: {}, e: {:.5}"
-                #           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
-                #    break
+                    print("episode: {}/{}, score: {}, e: {:.5}"
+                           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
+                    break
                 if len(self.agent.memory) > batch_size:
                     self.agent.replay(batch_size)
                     self.agent.memory.clear()
             scores_app.append(score_cumul)
-            scores_evo.append(simuPostLearning(self.agent))
+            scores_evo.append(self.simuPostLearning(self.agent))
 
 
             #if(e % 15 == 0):
@@ -103,11 +122,19 @@ class FrameHRL(Frame):
         #plt.plot(scores_evo, 'b+')    
         #plt.show() 
 
+    # def switchReward(self, i):
+    #     switcher={
+    #         0: 0,
+    #         1: 2 / 200,
+    #         2: -10 / 200
+    #     }
+    #     return switcher.get(i,"Invalid reward")
+
     def switchReward(self, i):
         switcher={
             0: 0,
-            1: 2 / 200,
-            2: -10 / 200
+            1: 4 / 239,
+            2: -4 / 239
         }
         return switcher.get(i,"Invalid reward")
   

@@ -4,6 +4,7 @@ from tkinter.messagebox import *
 import numpy as np
 from Modele.Environnement.Action import int2Action2String1Char
 from Modele.Environnement.Action import int2Action2String
+import matplotlib.pyplot as plt
 
 
 class FrameHRL(Frame):
@@ -70,7 +71,7 @@ class FrameHRL(Frame):
 
         done = False
         batch_size = 2
-        Episodes = 10
+        Episodes = 50
         scores_app = []
         scores_evo = []
 
@@ -97,15 +98,16 @@ class FrameHRL(Frame):
 
                 score_cumul += reward
                 state = next_state
-
+                
                 if done:
-                #    self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
+                    #self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
                     print("episode: {}/{}, score: {}, e: {:.5}"
                            .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
                     break
                 if len(self.agent.memory) > batch_size:
                     self.agent.replay(batch_size)
                     self.agent.memory.clear()
+
             scores_app.append(score_cumul)
             scores_evo.append(self.simuPostLearning(self.agent))
 
@@ -119,8 +121,8 @@ class FrameHRL(Frame):
         except:
             showinfo('Not OK', 'Failed at saving weight !')
 
-        #plt.plot(scores_evo, 'b+')    
-        #plt.show() 
+        plt.plot(scores_evo, 'b+')    
+        plt.show() 
 
     # def switchReward(self, i):
     #     switcher={
@@ -133,8 +135,10 @@ class FrameHRL(Frame):
     def switchReward(self, i):
         switcher={
             0: 0,
-            1: 4 / 239,
-            2: -4 / 239
+            1: 1/10, #4 / 239,
+            2: -1/10, #-4 / 239
+            3: 2/10,
+            4: -2/10
         }
         return switcher.get(i,"Invalid reward")
   
@@ -165,7 +169,7 @@ class FrameHRL(Frame):
             self.framePrincipale.FrameEcranControle.ResetAction()
 
         # demande à l'utilisateur de juger l'action
-        rewardHRL = int(input("Juger l'action : 1 : bien, 0 : je ne sais pas, 2 : nul"))
+        rewardHRL = int(input("Juger l'action : 1 : bien, 3 : genial, 0 : je ne sais pas, 2 : nul, 4 : vraiment nul  "))
         rewardHRLNorm = self.switchReward(rewardHRL)
         reward = reward + rewardHRLNorm
         

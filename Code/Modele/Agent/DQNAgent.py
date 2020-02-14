@@ -2,6 +2,7 @@ from collections import deque
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import SGD
 
 import numpy as np
 import random
@@ -14,10 +15,10 @@ class DQNAgent:
         self.action_size = action_size
         self.memory = deque(maxlen=2000)
         self.gamma = 0.95    # discount rate
-        self.epsilon = 1  # exploration rate
+        self.epsilon = 0.5  # exploration rate
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.999
-        self.learning_rate = 0.001
+        self.epsilon_decay = 0.5
+        self.learning_rate = 1
         self.model = self._build_model()
 
     ## Initialisation des differentes couches du reseau ##
@@ -28,7 +29,7 @@ class DQNAgent:
         model.add(Dense(10, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
         model.compile(loss='mse',
-                      optimizer=Adam(lr=self.learning_rate))
+                      optimizer=SGD(lr=self.learning_rate))
         return model
 
     ## Fonction de sauvegarde d'un 4-uplet dans la memoire de replay ##

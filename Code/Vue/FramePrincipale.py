@@ -4,6 +4,7 @@ from Vue.FrameVisualisation import FrameVisualisation
 from Vue.FrameEcranControle import FrameEcranControle
 from Vue.FrameRL import FrameRL
 from Vue.FrameHRL import FrameHRL
+from Vue.FrameQMap import FrameQMap
 
 class FramePrincipale(Frame):
     
@@ -23,8 +24,11 @@ class FramePrincipale(Frame):
         # Frame de visualisation
         self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)
 
+        # Frame Q_map
+        self.FrameQMap = FrameQMap(fenetre, self.env, self.agent, self)
+
         # Ecran de controle
-        self.FrameEcranControle = FrameEcranControle(fenetre, self.env, self.agent, self)
+        #self.FrameEcranControle = FrameEcranControle(fenetre, self.env, self.agent, self)
 
         # Frame d'apprentissage
-        self.FrameRL = FrameRL(fenetre, self.env, self.agent, self)
+        #self.FrameRL = FrameRL(fenetre, self.env, self.agent, self)

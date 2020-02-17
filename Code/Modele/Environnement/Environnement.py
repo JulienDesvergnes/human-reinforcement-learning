@@ -19,9 +19,9 @@ class GoToTheGoalEnv2D :
         # self.reward = [("rewardMovement",self.rewardMovement), ("rewardWin", self.rewardWin), ("rewardLose", self.rewardLose)]
 
         ## Les recompenses renforcement humain ##
-        self.rewardMovement = - 1 /  239
-        self.rewardWin = 251 / 239
-        self.rewardLose = -3 / 239
+        self.rewardMovement = 0 #- 1 /  239
+        self.rewardWin = 0 #251 / 239
+        self.rewardLose = 0 #-3 / 239
         self.reward = [("rewardMovement",self.rewardMovement), ("rewardWin", self.rewardWin), ("rewardLose", self.rewardLose)]
 
     ## Remet l'etat de l'environnement a celui du depart ##

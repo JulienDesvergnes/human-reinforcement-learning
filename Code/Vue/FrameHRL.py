@@ -106,6 +106,9 @@ class FrameHRL(Frame):
                     break
                 if len(self.agent.memory) > batch_size:
                     self.agent.replay(batch_size)
+
+                    # ajouter modif Qtable 
+                    
                     self.agent.memory.clear()
 
             scores_app.append(score_cumul)

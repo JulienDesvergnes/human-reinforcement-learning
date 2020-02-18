@@ -16,19 +16,19 @@ class FramePrincipale(Frame):
         fenetre['bg']='white'
 
         #Frame de HRL
-        self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
+        #self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
 
         # Frame de description
-        self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
+        #self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
 
         # Frame de visualisation
         self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)
-
-        # Frame Q_map
-        self.FrameQMap = FrameQMap(fenetre, self.env, self.agent, self)
 
         # Ecran de controle
         #self.FrameEcranControle = FrameEcranControle(fenetre, self.env, self.agent, self)
 
         # Frame d'apprentissage
         #self.FrameRL = FrameRL(fenetre, self.env, self.agent, self)
+
+        # FrameQMAP
+        self.FrameQMap = FrameQMap(fenetre, self.env, self.agent, self)

@@ -13,6 +13,7 @@ from Modele.Environnement.State import State
 from Modele.Environnement.Action import *
 from Modele.Environnement.Environnement import GoToTheGoalEnv2D
 from Vue.FramePrincipale import FramePrincipale
+from Vue.FrameSecondaire import FrameSecondaire
 
 
 
@@ -383,5 +384,11 @@ if __name__ == "__main__":
     action_size = env_.action_size
     agent_ = DQNAgent(state_size, action_size)
 
+    fenetre2 = Toplevel()
+    fenetre2.title('TEST')
+
     FramePrincipale = FramePrincipale(fenetre, env_, agent_)
     FramePrincipale.mainloop()
+
+    FrameSecondaire = FrameSecondaire(fenetre2, env_, agent_)
+    FrameSecondaire.mainloop()

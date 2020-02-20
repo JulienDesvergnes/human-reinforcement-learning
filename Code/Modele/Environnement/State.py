@@ -23,3 +23,4 @@ class State:
     ## Conversion d'un etat en tableau numpy (pour le replay de l'agent) ##
     def convertInNumpy(self):
         return np.array([self.x, self.y, self.goalx, self.goaly])
+

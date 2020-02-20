@@ -16,6 +16,7 @@ from Vue.FramePrincipale import FramePrincipale
 
 
 
+
 def simuPostLearning(agent):
     env = GoToTheGoalEnv2D()
     state_size = env.state_size

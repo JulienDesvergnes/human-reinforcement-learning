@@ -15,7 +15,7 @@ class GoToTheGoalEnv2D :
         ## Les recompenses possibles ##
         self.rewardMovement = - 1.0 /  200
         self.rewardWin = 203.0 / 200
-        self.rewardLose = - 20.0 / 200
+        self.rewardLose = - 100.0 / 200
         self.reward = [("rewardMovement",self.rewardMovement), ("rewardWin", self.rewardWin), ("rewardLose", self.rewardLose)]
 
     ## Remet l'etat de l'environnement a celui du depart ##
@@ -57,6 +57,21 @@ class GoToTheGoalEnv2D :
 
         ## On retourne le nouvel etat, la recompense et un booleen qui denote la terminaison de la simulation courante ##
         return (self.state.convertInNumpy(), r, done)
+
+    # def isDone(self,action):
+    #     if (action == 0) :
+    #         if (self.state.x - 1 == self.state.goalx or self.state.x - 1 <= 0) :
+    #             return True
+    #     elif (action == 1) :
+    #         if (self.state.x + 1 == self.state.goalx or self.state.x + 1 >= self.state.grid_size - 1) :
+    #             return True
+    #     elif (action == 2) :
+    #         if (self.state.y - 1 == self.state.goaly or self.state.y - 1 <= 0) :
+    #             return True
+    #     elif (action == 3) :
+    #         if (self.state.y + 1 == self.state.goaly or self.state.y + 1 >= self.state.grid_size - 1) :
+    #             return True
+    #     return False
 
     ## Methode de rendu interne a ameliorer dans la vue fenetre ##
     def render(self):

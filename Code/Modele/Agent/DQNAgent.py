@@ -14,10 +14,10 @@ class DQNAgent:
         self.action_size = action_size
         self.memory = deque(maxlen=2000)
         self.gamma = 0.95    # discount rate
-        self.epsilon = 1.0  # exploration rate
+        self.epsilon = 0  # exploration rate
         self.epsilon_min = 0.01
-        self.epsilon_decay = 0.999
-        self.learning_rate = 0.0001
+        self.epsilon_decay = 0.9
+        self.learning_rate = 0.99
         self.model = self._build_model()
 
     ## Initialisation des differentes couches du reseau ##
@@ -46,6 +46,7 @@ class DQNAgent:
     ## Etape d'apprentissage ##
     def replay(self, batch_size):
         minibatch = random.sample(self.memory, batch_size)
+        # minibatch = self.memory[-batch_size:]
         for state, action, reward, next_state, done in minibatch:
             target = reward
             if not done:

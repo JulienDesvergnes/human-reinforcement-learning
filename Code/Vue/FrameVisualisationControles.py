@@ -62,3 +62,5 @@ class FrameVisualisationControles(Frame):
         if (done and not self.framePrincipale.FrameEcranControle.inSimulation):
             self.framePrincipale.FrameEcranControle.AddSimuInList()
             self.framePrincipale.FrameEcranControle.ResetAction()
+
+        return next_state, reward, done

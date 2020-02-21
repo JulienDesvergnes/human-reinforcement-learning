@@ -11,7 +11,7 @@ class FrameVisualisationState(Frame):
         self.FrameVisualisationStateEvolution.pack(side=TOP, padx=5, pady=5)
 
         self.FrameVisualisationEtatAvant = LabelFrame(self.FrameVisualisationStateEvolution, text = "Etat Avant", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameVisualisationEtatAvant.config(width=260, height=50)
+        self.FrameVisualisationEtatAvant.config(width=80, height=50)
         self.FrameVisualisationEtatAvant.pack(side=LEFT, padx=2, pady=2)
         self.FrameVisualisationEtatAvant.pack_propagate(0)
 
@@ -21,7 +21,7 @@ class FrameVisualisationState(Frame):
         self.FrameVisualisationAction.pack_propagate(0)
 
         self.FrameVisualisationEtatApres = LabelFrame(self.FrameVisualisationStateEvolution, text = "Etat Apres", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameVisualisationEtatApres.config(width=260, height=50)
+        self.FrameVisualisationEtatApres.config(width=80, height=50)
         self.FrameVisualisationEtatApres.pack(side=LEFT, padx=2, pady=2)
         self.FrameVisualisationEtatApres.pack_propagate(0)
 
@@ -31,7 +31,8 @@ class FrameVisualisationState(Frame):
         Label(self.FrameVisualisationEtatAvant, textvariable=self.EtatAvant, bg="white", justify="left").pack()
 
         self.EtatApres = StringVar()
-        self.EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
+        # self.EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
+        self.EtatApres.set("(" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
         Label(self.FrameVisualisationEtatApres, textvariable=self.EtatApres, bg="white", justify="left").pack()
 
         self.Recompense = StringVar()

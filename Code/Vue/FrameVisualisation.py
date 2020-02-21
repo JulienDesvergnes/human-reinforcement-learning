@@ -17,7 +17,7 @@ class FrameVisualisation(Frame):
 
         self.FrameVisualisationState = FrameVisualisationState(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
-        self.FrameVisualisationControles = FrameVisualisationControles(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
+        # self.FrameVisualisationControles = FrameVisualisationControles(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
         ## Visualisation de l'environnement ##
         self.CanvasW = 400

@@ -15,7 +15,7 @@ class FrameRL(Frame):
         self.framePrincipale = framePrincipale
 
         self.FrameRenforcement = LabelFrame(frame, text = "Renforcement Classique", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameRenforcement.pack(side=LEFT, padx=5, pady=5)
+        self.FrameRenforcement.pack(side = LEFT, padx=3, pady=3)
 
         self.FrameLoadW = LabelFrame(self.FrameRenforcement, text = "Charger des poids", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameLoadW.pack(side=TOP, padx=2, pady=2)
@@ -28,13 +28,13 @@ class FrameRL(Frame):
         # self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True, fill = BOTH)
         # self.FrameReplayLearningList.pack_propagate(0)
 
-        self.FramePredictionMap = LabelFrame(self.FrameRenforcement, text = "Carte de prediction", bg="white", borderwidth=2, relief=GROOVE)
-        self.FramePredictionMap.config(width=250, height=250)
+        # self.FramePredictionMap = LabelFrame(self.FrameRenforcement, text = "Carte de prediction", bg="white", borderwidth=2, relief=GROOVE)
+        # self.FramePredictionMap.config(width=250, height=250)
         # self.FramePredictionMap.pack(side=TOP, padx=5, pady=5, expand=True, fill = BOTH)
         # self.FramePredictionMap.pack_propagate(0)
 
-        self.FramePMActions = LabelFrame(self.FrameRenforcement, text = "Actions Prediction Map", bg="white", borderwidth=2, relief=GROOVE)
-        self.FramePMActions.pack(side=TOP, padx=2, pady=2)
+        # self.FramePMActions = LabelFrame(self.FrameRenforcement, text = "Actions Prediction Map", bg="white", borderwidth=2, relief=GROOVE)
+        # self.FramePMActions.pack(side=TOP, padx=2, pady=2)
 
         self.FrameHumanAction = LabelFrame(self.FrameRenforcement, text = "Human Action", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameHumanAction.config(width=150, height=150)
@@ -44,19 +44,16 @@ class FrameRL(Frame):
         self.HumanActionButton1 = Button(self.FrameHumanAction, text='Oui', command=lambda: self.var.set(1))
         self.HumanActionButton2 = Button(self.FrameHumanAction, text='Non', command=lambda: self.var.set(2))
         self.HumanActionButton3 = Button(self.FrameHumanAction, text='JSP', command=lambda: self.var.set(3))
-        # HumanActionButton.place(x=75,y=1)
-        # HumanActionButton.place(x=75,y=5)
-        # HumanActionButton.place(x=75,y=30)
         self.HumanActionButton1.grid(row=0, column=0, sticky="nsew",padx=5, pady=5)
         self.HumanActionButton2.grid(row=0, column=2, sticky="nsew",padx=5, pady=5)
         self.HumanActionButton3.grid(row=0, column=4, sticky="nsew",padx=5, pady=5)
 
 
-        self.FrameResetParam = LabelFrame(self.FrameRenforcement, text="Reset Parametres", bg="white", borderwidth=2,relief=GROOVE)
-        self.FrameResetParam.config(width=150, height=150)
-        self.FrameResetParam.pack(side=TOP, padx=5, pady=5)
-        self.ResetButton = Button(self.FrameResetParam, text='Reset Epsilon', command=self.resetAction)
-        self.ResetButton.pack()
+        # self.FrameResetParam = LabelFrame(self.FrameRenforcement, text="Reset Parametres", bg="white", borderwidth=2,relief=GROOVE)
+        # self.FrameResetParam.config(width=150, height=150)
+        # self.FrameResetParam.pack(side=TOP, padx=5, pady=5)
+        # self.ResetButton = Button(self.FrameResetParam, text='Reset Epsilon', command=self.resetAction)
+        # self.ResetButton.pack()
 
 
         ## Charger les poids
@@ -77,66 +74,66 @@ class FrameRL(Frame):
         # scrollbar.pack(side="right", fill="y")
 
         ## PredictionMap
-        self.CanvasW = 200
-        self.CanvasH = 200
-        self.canvasPredictionMap,_ = self.framePrincipale.FrameVisualisation.VisualisationEnvironnementCanvas(self.FramePredictionMap, self.CanvasW, self.CanvasH)
-        self.canvasPredictionMap.pack()
+        # self.CanvasW = 200
+        # self.CanvasH = 200
+        # self.canvasPredictionMap,_ = self.framePrincipale.FrameVisualisation.VisualisationEnvironnementCanvas(self.FramePredictionMap, self.CanvasW, self.CanvasH)
+        # self.canvasPredictionMap.pack()
 
-        self.calculPredictionMapButton = Button(self.FramePMActions, text ='Calculer Prediction Map', command=self.calulPredictionMap)
-        self.calculPredictionMapButton.pack()
+        # self.calculPredictionMapButton = Button(self.FramePMActions, text ='Calculer Prediction Map', command=self.calulPredictionMap)
+        # self.calculPredictionMapButton.pack()
 
-        FrameQValuesAnt = LabelFrame(self.FrameRenforcement, text = "Q-values avant récompense humaine", bg="white", borderwidth=2, relief=GROOVE)
-        FrameQValuesAnt.pack(side=TOP, padx=5, pady=5)
-
-        FrameQValuesPost = LabelFrame(self.FrameRenforcement, text="Q-values après récompense humaine", bg="white", borderwidth=2,relief=GROOVE)
-        FrameQValuesPost.pack(side=BOTTOM, padx=5, pady=5)
-
-        FrameQHautAnt = LabelFrame(FrameQValuesAnt, text="Action Haute", bg="white", borderwidth=2,relief=GROOVE)
-        FrameQHautPost = LabelFrame(FrameQValuesPost, text="Action Haute", bg="white", borderwidth=2,relief=GROOVE)
-
-        FrameQGaucheAnt = LabelFrame(FrameQValuesAnt, text="Action Gauche", bg="white", borderwidth=2, relief=GROOVE)
-        FrameQGauchePost = LabelFrame(FrameQValuesPost, text="Action Gauche", bg="white", borderwidth=2, relief=GROOVE)
-
-        FrameQDroiteAnt = LabelFrame(FrameQValuesAnt, text="Action Droite", bg="white", borderwidth=2, relief=GROOVE)
-        FrameQDroitePost = LabelFrame(FrameQValuesPost, text="Action Droite", bg="white", borderwidth=2, relief=GROOVE)
-
-        FrameQBasAnt = LabelFrame(FrameQValuesAnt, text="Action Bas", bg="white", borderwidth=2, relief=GROOVE)
-        FrameQBasPost = LabelFrame(FrameQValuesPost, text="Action Bas", bg="white", borderwidth=2, relief=GROOVE)
-
-        FrameQHautAnt.grid(row=0, column=1, sticky="nsew")
-        FrameQHautPost.grid(row=0, column=1, sticky="nsew")
-        FrameQGaucheAnt.grid(row=1, column=0, sticky="nsew")
-        FrameQGauchePost.grid(row=1, column=0, sticky="nsew")
-        FrameQDroiteAnt.grid(row=1, column=2, sticky="nsew")
-        FrameQDroitePost.grid(row=1, column=2, sticky="nsew")
-        FrameQBasAnt.grid(row=2, column=1, sticky="nsew")
-        FrameQBasPost.grid(row=2, column=1, sticky="nsew")
-
-        self.QHautAnt = StringVar()
-        self.QGaucheAnt = StringVar()
-        self.QDroiteAnt = StringVar()
-        self.QBasAnt = StringVar()
-        self.QHautPost = StringVar()
-        self.QGauchePost = StringVar()
-        self.QDroitePost = StringVar()
-        self.QBasPost = StringVar()
-        
-        self.QHautAnt.set(" Q Haut : ")
-        Label(FrameQHautAnt, textvariable=self.QHautAnt, bg="white", justify="left").pack()
-        self.QGaucheAnt.set(" Q Gauche : ")
-        Label(FrameQGaucheAnt, textvariable=self.QGaucheAnt, bg="white", justify="left").pack()
-        self.QDroiteAnt.set(" Q Droite : ")
-        Label(FrameQDroiteAnt, textvariable=self.QDroiteAnt, bg="white", justify="left").pack()
-        self.QBasAnt.set(" Q Bas : ")
-        Label(FrameQBasAnt, textvariable=self.QBasAnt, bg="white", justify="left").pack()
-        self.QHautPost.set(" Q Haut : ")
-        Label(FrameQHautPost, textvariable=self.QHautPost, bg="white", justify="left").pack()
-        self.QGauchePost.set(" Q Gauche : ")
-        Label(FrameQGauchePost, textvariable=self.QGauchePost, bg="white", justify="left").pack()
-        self.QDroitePost.set(" Q Droite : ")
-        Label(FrameQDroitePost, textvariable=self.QDroitePost, bg="white", justify="left").pack()
-        self.QBasPost.set(" Q Bas : ")
-        Label(FrameQBasPost, textvariable=self.QBasPost, bg="white", justify="left").pack()
+        # FrameQValuesAnt = LabelFrame(self.FrameRenforcement, text = "Q-values avant récompense humaine", bg="white", borderwidth=2, relief=GROOVE)
+        # FrameQValuesAnt.pack(side=TOP, padx=5, pady=5)
+        #
+        # FrameQValuesPost = LabelFrame(self.FrameRenforcement, text="Q-values après récompense humaine", bg="white", borderwidth=2,relief=GROOVE)
+        # FrameQValuesPost.pack(side=BOTTOM, padx=5, pady=5)
+        #
+        # FrameQHautAnt = LabelFrame(FrameQValuesAnt, text="Action Haute", bg="white", borderwidth=2,relief=GROOVE)
+        # FrameQHautPost = LabelFrame(FrameQValuesPost, text="Action Haute", bg="white", borderwidth=2,relief=GROOVE)
+        #
+        # FrameQGaucheAnt = LabelFrame(FrameQValuesAnt, text="Action Gauche", bg="white", borderwidth=2, relief=GROOVE)
+        # FrameQGauchePost = LabelFrame(FrameQValuesPost, text="Action Gauche", bg="white", borderwidth=2, relief=GROOVE)
+        #
+        # FrameQDroiteAnt = LabelFrame(FrameQValuesAnt, text="Action Droite", bg="white", borderwidth=2, relief=GROOVE)
+        # FrameQDroitePost = LabelFrame(FrameQValuesPost, text="Action Droite", bg="white", borderwidth=2, relief=GROOVE)
+        #
+        # FrameQBasAnt = LabelFrame(FrameQValuesAnt, text="Action Bas", bg="white", borderwidth=2, relief=GROOVE)
+        # FrameQBasPost = LabelFrame(FrameQValuesPost, text="Action Bas", bg="white", borderwidth=2, relief=GROOVE)
+        #
+        # FrameQHautAnt.grid(row=0, column=1, sticky="nsew")
+        # FrameQHautPost.grid(row=0, column=1, sticky="nsew")
+        # FrameQGaucheAnt.grid(row=1, column=0, sticky="nsew")
+        # FrameQGauchePost.grid(row=1, column=0, sticky="nsew")
+        # FrameQDroiteAnt.grid(row=1, column=2, sticky="nsew")
+        # FrameQDroitePost.grid(row=1, column=2, sticky="nsew")
+        # FrameQBasAnt.grid(row=2, column=1, sticky="nsew")
+        # FrameQBasPost.grid(row=2, column=1, sticky="nsew")
+        #
+        # self.QHautAnt = StringVar()
+        # self.QGaucheAnt = StringVar()
+        # self.QDroiteAnt = StringVar()
+        # self.QBasAnt = StringVar()
+        # self.QHautPost = StringVar()
+        # self.QGauchePost = StringVar()
+        # self.QDroitePost = StringVar()
+        # self.QBasPost = StringVar()
+        #
+        # self.QHautAnt.set(" Q Haut : ")
+        # Label(FrameQHautAnt, textvariable=self.QHautAnt, bg="white", justify="left").pack()
+        # self.QGaucheAnt.set(" Q Gauche : ")
+        # Label(FrameQGaucheAnt, textvariable=self.QGaucheAnt, bg="white", justify="left").pack()
+        # self.QDroiteAnt.set(" Q Droite : ")
+        # Label(FrameQDroiteAnt, textvariable=self.QDroiteAnt, bg="white", justify="left").pack()
+        # self.QBasAnt.set(" Q Bas : ")
+        # Label(FrameQBasAnt, textvariable=self.QBasAnt, bg="white", justify="left").pack()
+        # self.QHautPost.set(" Q Haut : ")
+        # Label(FrameQHautPost, textvariable=self.QHautPost, bg="white", justify="left").pack()
+        # self.QGauchePost.set(" Q Gauche : ")
+        # Label(FrameQGauchePost, textvariable=self.QGauchePost, bg="white", justify="left").pack()
+        # self.QDroitePost.set(" Q Droite : ")
+        # Label(FrameQDroitePost, textvariable=self.QDroitePost, bg="white", justify="left").pack()
+        # self.QBasPost.set(" Q Bas : ")
+        # Label(FrameQBasPost, textvariable=self.QBasPost, bg="white", justify="left").pack()
 
     def resetAction(self) :
         self.agent.epsilon = 1.0
@@ -349,24 +346,23 @@ class FrameRL(Frame):
                     # print("episode: {}/{}, score: {}, e: {:.5}".format(e + 1, Episodes, score_cumul, self.agent.epsilon))
                     break
 
-                # self.var.set(0)
-                # self.HumanActionButton1.wait_variable(self.var)
-                #
+                self.var.set(0)
+                self.HumanActionButton1.wait_variable(self.var)
 
                 # Juge
-                reward_human = 0
-                if (self.distance(next_state) < self.distance(state)) :
-                    reward_human =  10 / 200
-                else :
-                    reward_human = -6 / 200
-
                 # reward_human = 0
-                # if self.var.get() == 1 :
-                #     reward_human  = 10/200
-                # elif self.var.get() == 2 :
-                #     reward_human = -5/200
-                # elif self.var.get() == 3 :
-                #     reward_human = 0
+                # if (self.distance(next_state) < self.distance(state)) :
+                #     reward_human =  10 / 200
+                # else :
+                #     reward_human = -6 / 200
+
+                reward_human = 0
+                if self.var.get() == 1 :
+                    reward_human  = 10/200
+                elif self.var.get() == 2 :
+                    reward_human = -5/200
+                elif self.var.get() == 3 :
+                    reward_human = 0
 
                 # Mise à jour du score courant dans l'interface
 
@@ -386,23 +382,23 @@ class FrameRL(Frame):
 
 
                 # Q-values for old state before human reward
-                self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
-                self.QDroiteAnt.set(" Q Droite : " + str(predictions[0][1])[:5])
-                self.QHautAnt.set(" Q Haut : " + str(predictions[0][2])[:5])
-                self.QBasAnt.set(" Q Bas : " + str(predictions[0][3])[:5])
+                # self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
+                # self.QDroiteAnt.set(" Q Droite : " + str(predictions[0][1])[:5])
+                # self.QHautAnt.set(" Q Haut : " + str(predictions[0][2])[:5])
+                # self.QBasAnt.set(" Q Bas : " + str(predictions[0][3])[:5])
+                #
+                # # # Q-values for old state after human reward
+                # self.QGauchePost.set(" Q Gauche : " + str(self.agent.model.predict(old_state)[0][0])[:5])
+                # self.QDroitePost.set(" Q Droite : " + str(self.agent.model.predict(old_state)[0][1])[:5])
+                # self.QHautPost.set(" Q Haut : " + str(self.agent.model.predict(old_state)[0][2])[:5])
+                # self.QBasPost.set(" Q Bas : " + str(self.agent.model.predict(old_state)[0][3])[:5])
 
-                # # Q-values for old state after human reward
-                self.QGauchePost.set(" Q Gauche : " + str(self.agent.model.predict(old_state)[0][0])[:5])
-                self.QDroitePost.set(" Q Droite : " + str(self.agent.model.predict(old_state)[0][1])[:5])
-                self.QHautPost.set(" Q Haut : " + str(self.agent.model.predict(old_state)[0][2])[:5])
-                self.QBasPost.set(" Q Bas : " + str(self.agent.model.predict(old_state)[0][3])[:5])
-
-                self.framePrincipale.update()
+                # self.framePrincipale.update()
 
                 # print("predictions avant : ",predictions)
                 # print("predictions après : ",self.agent.model.predict(old_state))
 
-                tm.sleep(3.0)
+                # tm.sleep(3.0)
 
 
 

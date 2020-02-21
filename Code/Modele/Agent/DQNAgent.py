@@ -2,6 +2,8 @@ from collections import deque
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
 from tensorflow.keras.optimizers import Adam
+from tensorflow.keras.optimizers import SGD
+
 
 import numpy as np
 import random
@@ -27,8 +29,9 @@ class DQNAgent:
         model.add(Dense(10, activation='relu'))
         model.add(Dense(10, activation='relu'))
         model.add(Dense(self.action_size, activation='linear'))
+        sgd = SGD(lr = self.learning_rate)
         model.compile(loss='mse',
-                      optimizer=Adam(lr=self.learning_rate))
+                      optimizer=sgd)
         return model
 
     ## Fonction de sauvegarde d'un 4-uplet dans la memoire de replay ##

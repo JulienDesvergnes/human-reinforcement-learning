@@ -13,9 +13,9 @@ class GoToTheGoalEnv2D :
         self.name = "GoToTheGoalEnv2D"
 
         ## Les recompenses possibles ##
-        self.rewardMovement = - 1.0 /  200
-        self.rewardWin = 203.0 / 200
-        self.rewardLose = - 100.0 / 200
+        self.rewardMovement = 0 /  200
+        self.rewardWin = 0 / 200
+        self.rewardLose = 0 / 200
         self.reward = [("rewardMovement",self.rewardMovement), ("rewardWin", self.rewardWin), ("rewardLose", self.rewardLose)]
 
     ## Remet l'etat de l'environnement a celui du depart ##

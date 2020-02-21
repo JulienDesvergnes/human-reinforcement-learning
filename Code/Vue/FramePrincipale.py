@@ -22,10 +22,10 @@ class FramePrincipale(Frame):
         #self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
 
         # Frame de visualisation
-        #self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)
+        self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)
 
         # Ecran de controle
-        #self.FrameEcranControle = FrameEcranControle(fenetre, self.env, self.agent, self)
+        self.FrameEcranControle = FrameEcranControle(fenetre, self.env, self.agent, self)
 
         # Frame d'apprentissage
         #self.FrameRL = FrameRL(fenetre, self.env, self.agent, self)

@@ -12,69 +12,16 @@ class FrameQMap(Frame):
         self.FrameQMap = LabelFrame(frame, text = "Test Q map", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameQMap.pack(side=RIGHT, padx=5, pady=5)
 
-        self.blabla = Label(self.FrameQMap, text="blabla")
-        self.blabla.pack()
+        self.QMapGrid = Label(self.FrameQMap, text="QMapGrid")
+        self.QMapGrid.pack()
 
         ## Visualisation de l'environnement ##
-        self.GridW = 400
-        self.GridH = 400
-        print("Avant")
-        # label = Label(self.blabla, text="label")
-        # label.grid(row=1)
-       
-
-        #self.CreateGrid(self.blabla, self.GridW, self.GridH)
-        print("Après")
         self.initialize_grid()
 
-        #self.tableau_label[0][0][0].set("tatat")
- 
-        #self.framePrincipale.update()
-
-
-    def CreateGrid(self, frame, W, H):
-        tableau_label = []
-        for i in range(1,self.env.state.grid_size):
-            tabtmp = []
-            for j in range(1, self.env.state.grid_size):
-                tabtmp.append([StringVar(),StringVar(),StringVar(),StringVar()])
-            tableau_label.append(tabtmp)
-
-        for i in range(1, self.env.state.grid_size):
-            for j in range(1,self.env.state.grid_size):
-                newframe = Frame(frame, bg="white",borderwidth = 2, relief = GROOVE)
-                newframe.grid(row = i, column = j)
-
-                QvalueLeft = StringVar()
-                QvalueLeft.set(str(tableau_label[i-1][j-1][0].get()))
-                labelLeft = Label(newframe, textvariable=QvalueLeft)
-                labelLeft.grid(row = 2, column = 1)
-
-                QvalueRight= StringVar()
-                QvalueRight.set(str(tableau_label[i-1][j-1][1].get()))
-                labelRight = Label(newframe, textvariable=QvalueRight)
-                labelRight.grid(row = 2, column = 3)
-
-                QvalueUp = StringVar()
-                QvalueUp.set(str(tableau_label[i-1][j-1][2].get()))
-                labelUp = Label(newframe, textvariable=QvalueUp)
-                labelUp.grid(row =1, column = 2)
-
-                QvalueDown = StringVar()
-                QvalueDown.set(str(tableau_label[i-1][j-1][3].get()))
-                labelDown = Label(newframe, textvariable=QvalueDown)
-                labelDown.grid(row = 3, column = 2)
-
-                #print(str(i) + " " + str(j))
-
-                tableau_label[(i-1)%40][(j-1)%40].append([QvalueLeft, QvalueRight, QvalueUp, QvalueDown])
-        return tableau_label
-    
-
     def initialize_grid(self):
-        self.blabla.destroy()
-        self.blabla = Label(self.FrameQMap, text="blabla")
-        self.blabla.pack()
+        self.QMapGrid.destroy()
+        self.QMapGrid = Label(self.FrameQMap, text="QMapGrid")
+        self.QMapGrid.pack()
 
         tableau_label = []
         for i in range(1,self.env.state.grid_size+1):
@@ -99,7 +46,7 @@ class FrameQMap(Frame):
                 else:
                     background = "white"
 
-                newframe = Frame(self.blabla, bg=background,borderwidth = 2, relief = GROOVE)
+                newframe = Frame(self.QMapGrid, bg=background,borderwidth = 2, relief = GROOVE)
                 newframe.grid(row = i, column = j)
 
                 QvalueLeft = StringVar()

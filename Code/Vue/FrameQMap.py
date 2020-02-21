@@ -77,25 +77,29 @@ class FrameQMap(Frame):
         self.blabla.pack()
 
         tableau_label = []
-        for i in range(1,self.env.state.grid_size):
+        for i in range(1,self.env.state.grid_size+1):
             tabtmp = []
-            for j in range(1, self.env.state.grid_size):
+            for j in range(1, self.env.state.grid_size+1):
                 tabtmp.append([StringVar(),StringVar(),StringVar(),StringVar()])
             tableau_label.append(tabtmp)
 
 
-        for i in range(1, self.env.state.grid_size):
-            for j in range(1, self.env.state.grid_size):
+        for i in range(1, self.env.state.grid_size+1):
+            for j in range(1, self.env.state.grid_size+1):
                 v = np.array([i / float(self.env.state.grid_size), j / float(self.env.state.grid_size), self.env.state.goalx / float(self.env.state.grid_size), self.env.state.goaly / float(self.env.state.grid_size)])
                 v = np.reshape(v,[1,self.env.state_size])
                 act_values = self.agent.model.predict(v) #Tableau de Q values actvalues[0] = q value left
                 
                 #print(act_values)
                 for k in range(1,5):
-                    tableau_label[i-1][j-1][k-1].set(str(round(act_values[0][k-1],3)))
+                    tableau_label[i-1][j-1][k-1].set(str(round(act_values[0][k-1],2)))
             
-                    
-                newframe = Frame(self.blabla, bg="white",borderwidth = 2, relief = GROOVE)
+                if (i-1==self.env.state.x) and (j-1==self.env.state.y):
+                    background = "orchid2"
+                else:
+                    background = "white"
+
+                newframe = Frame(self.blabla, bg=background,borderwidth = 2, relief = GROOVE)
                 newframe.grid(row = i, column = j)
 
                 QvalueLeft = StringVar()

@@ -16,13 +16,13 @@ class FramePrincipale(Frame):
         fenetre['bg']='white'
 
         #Frame de HRL
-        #self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
+        self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
 
         # Frame de description
         #self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
 
         # Frame de visualisation
-        self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)
+        #self.FrameVisualisation = FrameVisualisation(fenetre, self.env, self.agent, self)
 
         # Ecran de controle
         #self.FrameEcranControle = FrameEcranControle(fenetre, self.env, self.agent, self)

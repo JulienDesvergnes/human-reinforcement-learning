@@ -5,6 +5,7 @@ from Vue.FrameEcranControle import FrameEcranControle
 from Vue.FrameRL import FrameRL
 from Vue.FrameHRL import FrameHRL
 from Vue.FrameQMap import FrameQMap
+from Vue.FrameHRL_final import FrameHRL_final
 
 class FramePrincipale(Frame):
     
@@ -16,7 +17,10 @@ class FramePrincipale(Frame):
         fenetre['bg']='white'
 
         #Frame de HRL
-        self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
+        #self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
+
+        #Frame new
+        self.FrameHRL_new = FrameHRL_final(fenetre,self.env, self.agent, self)
 
         # Frame de description
         #self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)

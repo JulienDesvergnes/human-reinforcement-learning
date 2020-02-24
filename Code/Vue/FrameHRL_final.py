@@ -3,6 +3,7 @@ import os
 from tkinter.messagebox import *
 import numpy as np
 from Modele.Environnement.Action import int2Action2String1Char
+from Modele.Environnement.Action import int2Action2String
 import matplotlib.pyplot as plt
 from Modele.Environnement.Environnement import GoToTheGoalEnv2D
 import time as tm
@@ -50,8 +51,19 @@ class FrameHRL_final(Frame):
         # self.ResetButton.pack()
 
         ## Lancer l'entrainement
-        self.launchTrainingButton = Button(self.FrameTraining, text ="Lancer l'entrainement !!!", command=self.launchTrainingAction)
+        self.launchTrainingButton = Button(self.FrameTraining, text ="Lancer l'entrainement !!!", command=self.launchHRLAction)
         self.launchTrainingButton.pack()
+
+        self.FrameReplayLearningList = LabelFrame(self.FrameHRL_new, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
+        self.FrameReplayLearningList.config(width=250, height=250)
+        #self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True) #, fill = BOTH)
+        #self.FrameReplayLearningList.pack_propagate(0)
+
+        ## ReplayLearningList
+        self.replayLearningList = Listbox(self.FrameReplayLearningList)
+        self.replayLearningList.pack(fill =BOTH)
+        self.replayLearningList.pack_propagate(0)
+        self.replayLearningList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
 
         # # Frame pour afficher Q valeur précédente
         # FrameQValuesAnt = LabelFrame(self.FrameHRL_new, text = "Q-values avant récompense humaine", bg="white", borderwidth=2, relief=GROOVE)
@@ -115,6 +127,13 @@ class FrameHRL_final(Frame):
         # Label(FrameQDroitePost, textvariable=self.QDroitePost, bg="white", justify="left").pack()
         # self.QBasPost.set(" Q Bas : ")
         # Label(FrameQBasPost, textvariable=self.QBasPost, bg="white", justify="left").pack()
+    
+    def onselect(self,evt):
+        w = evt.widget
+        if (len(w.curselection()) > 0):
+            index = int(w.curselection()[0])
+            value = w.get(index)
+            # self.replaySimulationQuestion(value)
 
     def resetAction(self) :
         self.agent.epsilon = 1.0
@@ -151,19 +170,19 @@ class FrameHRL_final(Frame):
                 break
         return score_cumul
 
-    def distance(self,a):
-        d = (a[0,0]-a[0,2])**2 + (a[0,1]-a[0,3])**2
+    def distance(self,state):
+        goal = [self.env.state.goalx, self.env.state.goaly]
+        d = (state[0]-goal[0])**2 + (state[1]-goal[1])**2
         return d
 
-    def launchTrainingAction(self):
-
-        self.envPost = GoToTheGoalEnv2D()
+    def launchHRLAction(self) : 
         state_size = self.env.state_size
         self.framePrincipale.FrameEcranControle.ResetAction()
+        self.envPost = GoToTheGoalEnv2D()
 
         done = False
         batch_size = 2
-        Episodes = 200
+        Episodes = 1
         scores_app = []
         scores_evo = []
 
@@ -173,91 +192,67 @@ class FrameHRL_final(Frame):
             state = state * (1 / float(self.env.state.grid_size))
             state = np.reshape(state, [1, state_size])
             self.framePrincipale.FrameEcranControle.AccumulateurActions = []
-            AccumulateurActionsRL = []
+            
             for time in range(200):
+
+                # agent execute l'action en fonction de l'état reçu en argument
                 action = self.agent.act(state)
                 predictions = self.agent.model.predict(state)
-                next_state, reward, done = self.framePrincipale.FrameVisualisation.FrameVisualisationControles.UpdateAll(action)
-                next_state = next_state * (1 / float(self.env.state.grid_size))
-                next_state = np.reshape(next_state, [1, state_size])
 
-                #next_state, reward, done = self.env.step(action)
-                if not done :
-                    AccumulateurActionsRL = self.framePrincipale.FrameEcranControle.AccumulateurActions
+                # updateStep realise un step en actualisant la vue et demande au user son avis sur l'action
+                next_state, reward, done = self.updateStep(action)
+                
 
                 next_state = next_state * (1 / float(self.env.state.grid_size))
                 next_state = np.reshape(next_state, [1, state_size])
-
-                #self.framePrincipale.FrameEcranControle.AccumulateurActions.append(action)
-
-                if done:
-                    self.agent.remember(state, action, reward, next_state, done)
-                    score_cumul += reward
-                    self.framePrincipale.FrameEcranControle.AccumulateurActions = AccumulateurActionsRL
-                    # self.replayLearningList.insert(END, self.stringfromAccumulateurActions())
-                    # print("episode: {}/{}, score: {}, e: {:.5}".format(e + 1, Episodes, score_cumul, self.agent.epsilon))
-                    break
-
-                # self.var.set(0)
-                # self.HumanActionButton1.wait_variable(self.var)
-                #
-
-                # Juge
-                reward_human = 0
-                if (self.distance(next_state) < self.distance(state)) :
-                    reward_human =  10 / 200
-                else :
-                    reward_human = -6 / 200
-
-                # reward_human = 0
-                # if self.var.get() == 1 :
-                #     reward_human  = 10/200
-                # elif self.var.get() == 2 :
-                #     reward_human = -5/200
-                # elif self.var.get() == 3 :
-                #     reward_human = 0
-
-                # Mise à jour du score courant dans l'interface
-
-                self.framePrincipale.FrameEcranControle.AjouteScore(reward_human)
-
-                reward += reward_human
-                score_cumul += reward
-                self.agent.remember(state, action, reward, next_state, done)
 
                 old_state = state
                 state = next_state
 
-                # Apprentissage
+                self.agent.remember(state, action, reward, next_state, done)
+
+                self.framePrincipale.FrameEcranControle.AccumulateurActions.append(action)    
+
+                score_cumul += reward
+
+               
+                
+                if done:
+                    #self.replayLearningList.insert(END,self.stringfromAccumulateurActions())
+                    print("episode: {}/{}, score: {}, e: {:.5}"
+                           .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
+                    break
+                
+                # Apprentissage 
                 if len(self.agent.memory) > batch_size:
                     self.agent.replay(batch_size)
-                    # self.agent.memory.clear()
+
+                    # ajouter modif Qtable 
+                    
+                    self.agent.memory.clear()
+
+            # Q-values for old state before human reward
+            # self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
+            # self.QDroiteAnt.set(" Q Droite : " + str(predictions[0][1])[:5])
+            # self.QHautAnt.set(" Q Haut : " + str(predictions[0][2])[:5])
+            # self.QBasAnt.set(" Q Bas : " + str(predictions[0][3])[:5])
+
+            # # Q-values for old state after human reward
+            # self.QGauchePost.set(" Q Gauche : " + str(self.agent.model.predict(old_state)[0][0])[:5])
+            # self.QDroitePost.set(" Q Droite : " + str(self.agent.model.predict(old_state)[0][1])[:5])
+            # self.QHautPost.set(" Q Haut : " + str(self.agent.model.predict(old_state)[0][2])[:5])
+            # self.QBasPost.set(" Q Bas : " + str(self.agent.model.predict(old_state)[0][3])[:5])
+
+            # print("predictions avant : ",predictions)
+            # print("predictions après : ",self.agent.model.predict(old_state))
 
 
-                # Q-values for old state before human reward
-                # self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
-                # self.QDroiteAnt.set(" Q Droite : " + str(predictions[0][1])[:5])
-                # self.QHautAnt.set(" Q Haut : " + str(predictions[0][2])[:5])
-                # self.QBasAnt.set(" Q Bas : " + str(predictions[0][3])[:5])
-
-                # # Q-values for old state after human reward
-                # self.QGauchePost.set(" Q Gauche : " + str(self.agent.model.predict(old_state)[0][0])[:5])
-                # self.QDroitePost.set(" Q Droite : " + str(self.agent.model.predict(old_state)[0][1])[:5])
-                # self.QHautPost.set(" Q Haut : " + str(self.agent.model.predict(old_state)[0][2])[:5])
-                # self.QBasPost.set(" Q Bas : " + str(self.agent.model.predict(old_state)[0][3])[:5])
-
-                self.framePrincipale.update()
-
-                # print("predictions avant : ",predictions)
-                # print("predictions après : ",self.agent.model.predict(old_state))
-
-                tm.sleep(3.0)
-
-
-
+            # si juge ! 
+            tm.sleep(3.0)
 
             scores_app.append(score_cumul)
             scores_evo.append(self.simuPostLearning(self.agent))
+
 
             #if(e % 15 == 0):
                 #self.calculatePredictionMapAction()
@@ -269,5 +264,88 @@ class FrameHRL_final(Frame):
             showinfo('Not OK', 'Failed at saving weight !')
 
         plt.plot(scores_app, 'g')
-        plt.plot(scores_evo, 'b')
-        plt.show()
+        plt.plot(scores_evo, 'b+')  
+          
+        plt.show() 
+
+
+    # def switchReward(self, i):
+    #     switcher={
+    #         0: 0,
+    #         1: 2 / 200,
+    #         2: -10 / 200
+    #     }
+    #     return switcher.get(i,"Invalid reward")
+
+    def switchReward(self, i):
+        switcher={
+            0: 0,
+            1: 1/10, #4 / 239,
+            2: -1/10, #-4 / 239
+            3: 2/10,
+            4: -2/10
+        }
+        return switcher.get(i,"Invalid reward")
+        
+    def juge(self, old_state, state):
+        
+        # self.var.set(0)
+        # self.HumanActionButton1.wait_variable(self.var)
+
+        reward_human = 0
+        if (self.distance(state) < self.distance(old_state)) :
+            reward_human =  10 / 200
+        else :
+            reward_human = -6 / 200
+
+        # reward_human = 0
+        # if self.var.get() == 1 :
+        #     reward_human  = 10/200
+        # elif self.var.get() == 2 :
+        #     reward_human = -5/200
+        # elif self.var.get() == 3 :
+        #     reward_human = 0
+
+        return reward_human
+
+    def updateStep(self, numeroAction) : 
+        old_state = [self.env.state.x, self.env.state.y]
+
+        # On fait un pas de simulation
+        next_state, reward, done = self.env.step(numeroAction)
+        state = next_state[0:2]
+
+        # Mise a jour des donnees de la frame de visualisation des etats
+        EtatAvant = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatAvant
+        EtatApres = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatApres
+        ActionRealisee = self.framePrincipale.FrameVisualisation.FrameVisualisationState.ActionRealisee
+
+        EtatAvant.set(EtatApres.get())
+        EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
+        ActionRealisee.set(int2Action2String(numeroAction))
+
+        # On met a jour l'affichage graphique
+        self.framePrincipale.FrameVisualisation.UpdateCanvas(numeroAction)
+        self.framePrincipale.FrameEcranControle.Update()
+
+        # On ajoute cette action a la liste des actions realisees sur cette simulation
+        self.framePrincipale.FrameEcranControle.AccumulateurActions.append(numeroAction)
+
+        # Si la simulation est finie, on enregistre celle ci dans la liste des simus et on reset le simulateur
+        if (done and not self.framePrincipale.FrameEcranControle.inSimulation):
+            self.framePrincipale.FrameEcranControle.AddSimuInList()
+            self.framePrincipale.FrameEcranControle.ResetAction()
+
+        # demande à l'utilisateur de juger l'action
+        # rewardHRL = int(input("Juger l'action : 1 : bien, 3 : genial, 0 : je ne sais pas, 2 : nul, 4 : vraiment nul  "))
+        # rewardHRLNorm = self.switchReward(rewardHRL)
+
+        reward_human = self.juge(old_state, state) 
+        reward = reward + reward_human
+        
+        Recompense = self.framePrincipale.FrameVisualisation.FrameVisualisationState.Recompense
+        Recompense.set(str(reward))
+        self.framePrincipale.FrameEcranControle.AjouteScore(reward)
+        self.framePrincipale.FrameEcranControle.Update()
+        
+        return next_state, reward, done

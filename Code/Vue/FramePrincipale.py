@@ -19,7 +19,7 @@ class FramePrincipale(Frame):
         #Frame de HRL
         #self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
 
-        #Frame new
+        #Frame HRL new
         self.FrameHRL_new = FrameHRL_final(fenetre,self.env, self.agent, self)
 
         # Frame de description

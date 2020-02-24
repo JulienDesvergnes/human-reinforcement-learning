@@ -119,20 +119,6 @@ class FrameHRL_final(Frame):
     def resetAction(self) :
         self.agent.epsilon = 1.0
 
-    def onselect(self,evt):
-        w = evt.widget
-        if (len(w.curselection()) > 0):
-            index = int(w.curselection()[0])
-            value = w.get(index)
-            self.replaySimulationQuestion(value)
-
-    def replaySimulationQuestion(self,value):
-        if askyesno('Rejouer Simulation', "Rejouer Simulation ?"):
-            self.framePrincipale.FrameEcranControle.inSimulation = True
-            self.framePrincipale.FrameEcranControle.ResetAction()
-            self.framePrincipale.FrameEcranControle.replaySimulationAction(value)
-            self.framePrincipale.FrameEcranControle.inSimulation = False
-
     def chargerPoidsAction(self):
         if (os.path.exists("Weights_Model.wm.index")):
             self.agent.load("Weights_Model.wm")
@@ -140,12 +126,12 @@ class FrameHRL_final(Frame):
         else:
             showinfo('Not OK', 'Failed at loading !')
 
-    # def stringfromAccumulateurActions(self):
-    #     s = "Sim " + str(self.replayLearningList.size()) + " : "
-    #     # print("accumulateur d'actions ", self.framePrincipale.FrameEcranControle.AccumulateurActions)
-    #     for i in self.framePrincipale.FrameEcranControle.AccumulateurActions:
-    #         s += (int2Action2String1Char(i))
-    #     return s
+    def stringfromAccumulateurActions(self):
+        s = "Sim " + str(self.replayLearningList.size()) + " : "
+        # print("accumulateur d'actions ", self.framePrincipale.FrameEcranControle.AccumulateurActions)
+        for i in self.framePrincipale.FrameEcranControle.AccumulateurActions:
+            s += (int2Action2String1Char(i))
+        return s
 
     def simuPostLearning(self,agent):
         state_size = self.envPost.state_size
@@ -162,11 +148,12 @@ class FrameHRL_final(Frame):
             state = next_state * (1 / self.envPost.state.grid_size)
             state = np.reshape(state, [1, 4])
             if done :
-                return score_cumul
+                break
         return score_cumul
 
     def distance(self,a):
-        return (a[0,0]-a[0,2])**2 + (a[0,1]-a[0,3])**2
+        d = (a[0,0]-a[0,2])**2 + (a[0,1]-a[0,3])**2
+        return d
 
     def launchTrainingAction(self):
 
@@ -248,16 +235,16 @@ class FrameHRL_final(Frame):
 
 
                 # Q-values for old state before human reward
-                self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
-                self.QDroiteAnt.set(" Q Droite : " + str(predictions[0][1])[:5])
-                self.QHautAnt.set(" Q Haut : " + str(predictions[0][2])[:5])
-                self.QBasAnt.set(" Q Bas : " + str(predictions[0][3])[:5])
+                # self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
+                # self.QDroiteAnt.set(" Q Droite : " + str(predictions[0][1])[:5])
+                # self.QHautAnt.set(" Q Haut : " + str(predictions[0][2])[:5])
+                # self.QBasAnt.set(" Q Bas : " + str(predictions[0][3])[:5])
 
                 # # Q-values for old state after human reward
-                self.QGauchePost.set(" Q Gauche : " + str(self.agent.model.predict(old_state)[0][0])[:5])
-                self.QDroitePost.set(" Q Droite : " + str(self.agent.model.predict(old_state)[0][1])[:5])
-                self.QHautPost.set(" Q Haut : " + str(self.agent.model.predict(old_state)[0][2])[:5])
-                self.QBasPost.set(" Q Bas : " + str(self.agent.model.predict(old_state)[0][3])[:5])
+                # self.QGauchePost.set(" Q Gauche : " + str(self.agent.model.predict(old_state)[0][0])[:5])
+                # self.QDroitePost.set(" Q Droite : " + str(self.agent.model.predict(old_state)[0][1])[:5])
+                # self.QHautPost.set(" Q Haut : " + str(self.agent.model.predict(old_state)[0][2])[:5])
+                # self.QBasPost.set(" Q Bas : " + str(self.agent.model.predict(old_state)[0][3])[:5])
 
                 self.framePrincipale.update()
 

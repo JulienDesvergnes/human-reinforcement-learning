@@ -78,12 +78,10 @@ class FrameQMap(Frame):
                 elif ind_max == 2:
                     labelCenter = Label(newframe, text=" ^ ", bg = "yellow")
                 elif ind_max == 3:
-<<<<<<< HEAD
                     label = Label(newframe, text=" v ", bg = "orange")
-=======
-                    labelCenter = Label(newframe, text=" v ", bg = "green")
+
                 labelCenter.grid(row = 2, column = 2)
->>>>>>> 1a577202797fed7231e6ce5367e5a9cbd203a1b9
+
 
 
                 tableau_label[(i-1)%40][(j-1)%40].append([QvalueLeft, QvalueRight, QvalueUp, QvalueDown])

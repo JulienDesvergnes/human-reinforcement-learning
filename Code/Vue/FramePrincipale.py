@@ -19,13 +19,8 @@ class FramePrincipale(Frame):
         #Frame de HRL
         #self.FrameHRL = FrameHRL(fenetre, self.env, self.agent, self)
 
-<<<<<<< HEAD
         #Frame new
         #self.FrameHRL_new = FrameHRL_final(fenetre,self.env, self.agent, self)
-=======
-        #Frame HRL new
-        self.FrameHRL_new = FrameHRL_final(fenetre,self.env, self.agent, self)
->>>>>>> 1a577202797fed7231e6ce5367e5a9cbd203a1b9
 
         # Frame de description
         #self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)

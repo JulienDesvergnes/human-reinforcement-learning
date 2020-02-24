@@ -13,6 +13,3 @@ class FrameSecondaire(Frame):
 
         # Frame de description
         self.FrameDescription = FrameDescription(fenetre, self.env, self.agent, self)
-
-        # Frame Q_map
-        self.FrameQMap = FrameQMap(fenetre, self.env, self.agent, self)

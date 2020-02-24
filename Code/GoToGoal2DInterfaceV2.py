@@ -385,7 +385,7 @@ if __name__ == "__main__":
     agent_ = DQNAgent(state_size, action_size)
 
     # fenetre2 = Toplevel()
-    # fenetre2.title('TEST')
+    # fenetre2.title('Description')
 
     FramePrincipale = FramePrincipale(fenetre, env_, agent_)
     FramePrincipale.mainloop()

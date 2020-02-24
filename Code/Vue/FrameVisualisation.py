@@ -15,9 +15,9 @@ class FrameVisualisation(Frame):
         self.FrameVisualisationEnvironnement = LabelFrame(self.FrameSimulation, text = "Environnement", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameVisualisationEnvironnement.pack(side=TOP, padx=2, pady=2)
 
-        self.FrameVisualisationState = FrameVisualisationState(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
+        #self.FrameVisualisationState = FrameVisualisationState(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
-        self.FrameVisualisationControles = FrameVisualisationControles(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
+        #self.FrameVisualisationControles = FrameVisualisationControles(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
         ## Visualisation de l'environnement ##
         self.CanvasW = 400

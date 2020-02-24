@@ -79,7 +79,7 @@ class FrameQMap(Frame):
                 elif ind_max == 2:
                     label = Label(newframe, text=" ^ ", bg = "yellow")
                 elif ind_max == 3:
-                    label = Label(newframe, text=" v ", bg = "green")
+                    label = Label(newframe, text=" v ", bg = "orange")
 
                 label.grid(row = 2, column = 2)
 

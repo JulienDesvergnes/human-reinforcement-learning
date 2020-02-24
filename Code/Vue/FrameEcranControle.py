@@ -5,6 +5,7 @@ from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 from Modele.Environnement.Action import int2Action2String1Char
 from Vue.FrameVisualisationControles import FrameVisualisationControles
 import time
+from Vue.FrameHRL_final import FrameHRL_final
 
 class FrameEcranControle(Frame):
     
@@ -58,6 +59,9 @@ class FrameEcranControle(Frame):
 
         ## Booleen qui decrit si on est en simulation ou pas
         self.inSimulation = False
+
+        # Ecran Renfo humain
+        self.FrameHRL = FrameHRL_final(self.FrameControle, self.env, self.agent, self.framePrincipale)
 
     def AddSimuInList(self):
         self.replayList.insert(END,self.stringfromAccumulateurActions())

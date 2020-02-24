@@ -10,15 +10,15 @@ class FrameQMap(Frame):
 
 
         self.FrameQMap = LabelFrame(frame, text = "Test Q map", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameQMap.pack(side=RIGHT, padx=5, pady=5)
+        self.FrameQMap.pack(side=LEFT, padx=5, pady=5)
 
         self.QMapGrid = Label(self.FrameQMap, text="QMapGrid")
         self.QMapGrid.pack()
 
         ## Visualisation de l'environnement ##
-        self.initialize_grid()
+        self.update_Qmap()
 
-    def initialize_grid(self):
+    def update_Qmap(self):
         self.QMapGrid.destroy()
         self.QMapGrid = Label(self.FrameQMap, text="QMapGrid")
         self.QMapGrid.pack()
@@ -41,7 +41,7 @@ class FrameQMap(Frame):
                 for k in range(1,5):
                     tableau_label[i-1][j-1][k-1].set(str(round(act_values[0][k-1],2)))
             
-                if (i-1==self.env.state.x) and (j-1==self.env.state.y):
+                if (j-1==self.env.state.x) and (i-1==self.env.state.y):
                     background = "orchid2"
                 else:
                     background = "white"
@@ -78,11 +78,8 @@ class FrameQMap(Frame):
                 elif ind_max == 2:
                     labelCenter = Label(newframe, text=" ^ ", bg = "yellow")
                 elif ind_max == 3:
-                    label = Label(newframe, text=" v ", bg = "orange")
+                    labelCenter = Label(newframe, text=" v ", bg = "orange")
 
                 labelCenter.grid(row = 2, column = 2)
 
-
-
-                tableau_label[(i-1)%40][(j-1)%40].append([QvalueLeft, QvalueRight, QvalueUp, QvalueDown])
     

@@ -45,15 +45,15 @@ class FrameEcranControle(Frame):
         self.ResetButton.pack()
 
         ## Liste de replays
-        self.FrameReplayList = LabelFrame(self.FrameControle, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameReplayList.config(width=250, height=250)
-        self.FrameReplayList.pack(side=TOP, padx=5, pady=5, expand=True, fill = BOTH)
-        self.FrameReplayList.pack_propagate(0)
+        # self.FrameReplayList = LabelFrame(self.FrameControle, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
+        # self.FrameReplayList.config(width=250, height=250)
+        # self.FrameReplayList.pack(side=TOP, padx=5, pady=5, expand=True, fill = BOTH)
+        # self.FrameReplayList.pack_propagate(0)
 
-        self.replayList = Listbox(self.FrameReplayList)
-        self.replayList.pack(fill =BOTH)
-        self.replayList.pack_propagate(0)
-        self.replayList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
+        # self.replayList = Listbox(self.FrameReplayList)
+        # self.replayList.pack(fill =BOTH)
+        # self.replayList.pack_propagate(0)
+        # self.replayList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
 
         self.AccumulateurActions = []
 
@@ -63,14 +63,14 @@ class FrameEcranControle(Frame):
         # Ecran Renfo humain
         self.FrameHRL = FrameHRL_final(self.FrameControle, self.env, self.agent, self.framePrincipale)
 
-    def AddSimuInList(self):
-        self.replayList.insert(END,self.stringfromAccumulateurActions())
+    # def AddSimuInList(self):
+    #     self.replayList.insert(END,self.stringfromAccumulateurActions())
 
-    def stringfromAccumulateurActions(self):
-        s = "Sim " + str(self.replayList.size()) + " : "
-        for i in self.AccumulateurActions:
-            s += (int2Action2String1Char(i))
-        return s
+    # def stringfromAccumulateurActions(self):
+    #     s = "Sim " + str(self.replayList.size()) + " : "
+    #     for i in self.AccumulateurActions:
+    #         s += (int2Action2String1Char(i))
+    #     return s
 
     def onselect(self,evt):
         w = evt.widget
@@ -125,10 +125,10 @@ class FrameEcranControle(Frame):
         # Remise a zero du modele
         self.env.reset()
 
-        self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatAvant.set("")
-        self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
-        self.framePrincipale.FrameVisualisation.FrameVisualisationState.Recompense.set("Pas de recompense pour l'instant")
-        self.framePrincipale.FrameVisualisation.FrameVisualisationState.ActionRealisee.set("Pas d'action pour l'instant")
+        # self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatAvant.set("")
+        # self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
+        # self.framePrincipale.FrameVisualisation.FrameVisualisationState.Recompense.set("Pas de recompense pour l'instant")
+        # self.framePrincipale.FrameVisualisation.FrameVisualisationState.ActionRealisee.set("Pas d'action pour l'instant")
 
         # Redessiner le canvas et le graphe de scores cumules
         self.Reset()

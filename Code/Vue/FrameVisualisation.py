@@ -1,6 +1,7 @@
 from tkinter import *
 from Vue.FrameVisualisationState import FrameVisualisationState
 from Vue.FrameVisualisationControles import FrameVisualisationControles 
+from Vue.FrameDescription import FrameDescription
 
 class FrameVisualisation(Frame):
     
@@ -15,15 +16,17 @@ class FrameVisualisation(Frame):
         self.FrameVisualisationEnvironnement = LabelFrame(self.FrameSimulation, text = "Environnement", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameVisualisationEnvironnement.pack(side=TOP, padx=2, pady=2)
 
-        #self.FrameVisualisationState = FrameVisualisationState(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
+        # self.FrameVisualisationState = FrameVisualisationState(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
-        #self.FrameVisualisationControles = FrameVisualisationControles(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
+        # self.FrameVisualisationControles = FrameVisualisationControles(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
         ## Visualisation de l'environnement ##
         self.CanvasW = 400
         self.CanvasH = 400
         self.canvas, self.mobile = self.VisualisationEnvironnementCanvas(self.FrameVisualisationEnvironnement, self.CanvasW, self.CanvasH)
         self.canvas.pack()
+
+        self.FrameDescription = FrameDescription(self.FrameSimulation, self.env, self.agent, self.framePrincipale)
 
     def VisualisationEnvironnementCanvas(self,frame,W,H) :
     	# Taille du canvas

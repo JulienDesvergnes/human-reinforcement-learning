@@ -6,6 +6,7 @@ from Modele.Environnement.Action import int2Action2String1Char
 from Modele.Environnement.Action import int2Action2String
 import matplotlib.pyplot as plt
 from Modele.Environnement.Environnement import GoToTheGoalEnv2D
+from Vue.FrameQMap import FrameQMap
 import time as tm
 
 class FrameHRL_final(Frame):
@@ -16,7 +17,7 @@ class FrameHRL_final(Frame):
         self.framePrincipale = framePrincipale
 
         self.FrameHRL_new = LabelFrame(frame, text = "Renforcement Humain", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameHRL_new.pack(side=LEFT, padx=5, pady=5)
+        self.FrameHRL_new.pack(side=TOP, padx=5, pady=5)
 
         self.FrameLoadW = LabelFrame(self.FrameHRL_new, text = "Charger des poids", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameLoadW.pack(side=TOP, padx=2, pady=2)
@@ -54,16 +55,16 @@ class FrameHRL_final(Frame):
         self.launchTrainingButton = Button(self.FrameTraining, text ="Lancer l'entrainement !!!", command=self.launchHRLAction)
         self.launchTrainingButton.pack()
 
-        self.FrameReplayLearningList = LabelFrame(self.FrameHRL_new, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameReplayLearningList.config(width=250, height=250)
+        # self.FrameReplayLearningList = LabelFrame(self.FrameHRL_new, text = "Liste simulations", bg="white", borderwidth=2, relief=GROOVE)
+        # self.FrameReplayLearningList.config(width=250, height=250)
         #self.FrameReplayLearningList.pack(side=TOP, padx=5, pady=5, expand=True) #, fill = BOTH)
         #self.FrameReplayLearningList.pack_propagate(0)
 
         ## ReplayLearningList
-        self.replayLearningList = Listbox(self.FrameReplayLearningList)
-        self.replayLearningList.pack(fill =BOTH)
-        self.replayLearningList.pack_propagate(0)
-        self.replayLearningList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
+        # self.replayLearningList = Listbox(self.FrameReplayLearningList)
+        # self.replayLearningList.pack(fill =BOTH)
+        # self.replayLearningList.pack_propagate(0)
+        # self.replayLearningList.bind('<<ListboxSelect>>', lambda evt: self.onselect(evt))
 
         # # Frame pour afficher Q valeur précédente
         # FrameQValuesAnt = LabelFrame(self.FrameHRL_new, text = "Q-values avant récompense humaine", bg="white", borderwidth=2, relief=GROOVE)
@@ -145,12 +146,12 @@ class FrameHRL_final(Frame):
         else:
             showinfo('Not OK', 'Failed at loading !')
 
-    def stringfromAccumulateurActions(self):
-        s = "Sim " + str(self.replayLearningList.size()) + " : "
-        # print("accumulateur d'actions ", self.framePrincipale.FrameEcranControle.AccumulateurActions)
-        for i in self.framePrincipale.FrameEcranControle.AccumulateurActions:
-            s += (int2Action2String1Char(i))
-        return s
+    # def stringfromAccumulateurActions(self):
+    #     s = "Sim " + str(self.replayLearningList.size()) + " : "
+    #     # print("accumulateur d'actions ", self.framePrincipale.FrameEcranControle.AccumulateurActions)
+    #     for i in self.framePrincipale.FrameEcranControle.AccumulateurActions:
+    #         s += (int2Action2String1Char(i))
+    #     return s
 
     def simuPostLearning(self,agent):
         state_size = self.envPost.state_size
@@ -172,7 +173,7 @@ class FrameHRL_final(Frame):
 
     def distance(self,state):
         goal = [self.env.state.goalx, self.env.state.goaly]
-        d = (state[0]-goal[0])**2 + (state[1]-goal[1])**2
+        d = abs(state[0]-goal[0]) + abs(state[1]-goal[1])
         return d
 
     def launchHRLAction(self) : 
@@ -181,8 +182,8 @@ class FrameHRL_final(Frame):
         self.envPost = GoToTheGoalEnv2D()
 
         done = False
-        batch_size = 2
-        Episodes = 1
+        batch_size = 1
+        Episodes = 100
         scores_app = []
         scores_evo = []
 
@@ -192,22 +193,26 @@ class FrameHRL_final(Frame):
             state = state * (1 / float(self.env.state.grid_size))
             state = np.reshape(state, [1, state_size])
             self.framePrincipale.FrameEcranControle.AccumulateurActions = []
+            # print("Epoque : " , e)
             
             for time in range(200):
+
+                # print("        state : " , state, end = "  ")
 
                 # agent execute l'action en fonction de l'état reçu en argument
                 action = self.agent.act(state)
                 predictions = self.agent.model.predict(state)
 
+                # print("        action : " , action, end = "  ")
+
                 # updateStep realise un step en actualisant la vue et demande au user son avis sur l'action
                 next_state, reward, done = self.updateStep(action)
+
+                # print("        reward : " , reward)
                 
 
                 next_state = next_state * (1 / float(self.env.state.grid_size))
                 next_state = np.reshape(next_state, [1, state_size])
-
-                old_state = state
-                state = next_state
 
                 self.agent.remember(state, action, reward, next_state, done)
 
@@ -222,14 +227,20 @@ class FrameHRL_final(Frame):
                     print("episode: {}/{}, score: {}, e: {:.5}"
                            .format(e + 1, Episodes, score_cumul, self.agent.epsilon))
                     break
+                    
+                # self.var.set(0)
+                # self.HumanActionButton1.wait_variable(self.var)
+
+                
                 
                 # Apprentissage 
                 if len(self.agent.memory) > batch_size:
                     self.agent.replay(batch_size)
 
-                    # ajouter modif Qtable 
-                    
-                    self.agent.memory.clear()
+                    if (e%20) :
+                        # Ajouter modif Qtable 
+                        self.framePrincipale.FrameQMap.update_Qmap()
+                        # self.agent.memory.clear()
 
             # Q-values for old state before human reward
             # self.QGaucheAnt.set(" Q Gauche : " + str(predictions[0][0])[:5])
@@ -248,7 +259,7 @@ class FrameHRL_final(Frame):
 
 
             # si juge ! 
-            tm.sleep(3.0)
+            # tm.sleep(3.0)
 
             scores_app.append(score_cumul)
             scores_evo.append(self.simuPostLearning(self.agent))
@@ -263,8 +274,8 @@ class FrameHRL_final(Frame):
         except:
             showinfo('Not OK', 'Failed at saving weight !')
 
-        plt.plot(scores_app, 'g')
-        plt.plot(scores_evo, 'b+')  
+        plt.plot(scores_app, 'g+')
+        # plt.plot(scores_evo, 'b+')  
           
         plt.show() 
 
@@ -292,21 +303,24 @@ class FrameHRL_final(Frame):
         # self.var.set(0)
         # self.HumanActionButton1.wait_variable(self.var)
 
-        reward_human = 0
+        # print("distance old: ", self.distance(old_state), end = "  ")
+        # print("distance new : ", self.distance(state), end = "  ")
         if (self.distance(state) < self.distance(old_state)) :
             reward_human =  10 / 200
         else :
-            reward_human = -6 / 200
-
-        # reward_human = 0
-        # if self.var.get() == 1 :
-        #     reward_human  = 10/200
-        # elif self.var.get() == 2 :
-        #     reward_human = -5/200
-        # elif self.var.get() == 3 :
-        #     reward_human = 0
-
+            reward_human = -10 / 200
         return reward_human
+
+    def human_juge(self):
+        reward_human = 0
+        if self.var.get() == 1 :
+            reward_human  = 20/200
+        elif self.var.get() == 2 :
+            reward_human = -20/200
+        elif self.var.get() == 3 :
+            reward_human = 0
+        return reward_human
+
 
     def updateStep(self, numeroAction) : 
         old_state = [self.env.state.x, self.env.state.y]
@@ -316,16 +330,16 @@ class FrameHRL_final(Frame):
         state = next_state[0:2]
 
         # Mise a jour des donnees de la frame de visualisation des etats
-        EtatAvant = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatAvant
-        EtatApres = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatApres
-        ActionRealisee = self.framePrincipale.FrameVisualisation.FrameVisualisationState.ActionRealisee
+        # EtatAvant = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatAvant
+        # EtatApres = self.framePrincipale.FrameVisualisation.FrameVisualisationState.EtatApres
+        # ActionRealisee = self.framePrincipale.FrameVisualisation.FrameVisualisationState.ActionRealisee
 
-        EtatAvant.set(EtatApres.get())
-        EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
-        ActionRealisee.set(int2Action2String(numeroAction))
+        # EtatAvant.set(EtatApres.get())
+        # EtatApres.set("Position du mobile de déplacement : (" + str(self.env.state.x + 1) + ", " + str(self.env.state.y + 1) + ")")
+        # ActionRealisee.set(int2Action2String(numeroAction))
 
         # On met a jour l'affichage graphique
-        self.framePrincipale.FrameVisualisation.UpdateCanvas(numeroAction)
+        # self.framePrincipale.FrameVisualisation.UpdateCanvas(numeroAction)
         self.framePrincipale.FrameEcranControle.Update()
 
         # On ajoute cette action a la liste des actions realisees sur cette simulation
@@ -333,19 +347,28 @@ class FrameHRL_final(Frame):
 
         # Si la simulation est finie, on enregistre celle ci dans la liste des simus et on reset le simulateur
         if (done and not self.framePrincipale.FrameEcranControle.inSimulation):
-            self.framePrincipale.FrameEcranControle.AddSimuInList()
+            # self.framePrincipale.FrameEcranControle.AddSimuInList()
             self.framePrincipale.FrameEcranControle.ResetAction()
 
         # demande à l'utilisateur de juger l'action
         # rewardHRL = int(input("Juger l'action : 1 : bien, 3 : genial, 0 : je ne sais pas, 2 : nul, 4 : vraiment nul  "))
         # rewardHRLNorm = self.switchReward(rewardHRL)
 
+
+
+        # JUGE AUTO
         reward_human = self.juge(old_state, state) 
+
+        # JUGE HUMAIN
+        # reward_human = self.human_juge()
+
         reward = reward + reward_human
         
-        Recompense = self.framePrincipale.FrameVisualisation.FrameVisualisationState.Recompense
-        Recompense.set(str(reward))
+        # Recompense = self.framePrincipale.FrameVisualisation.FrameVisualisationState.Recompense
+        # Recompense.set(str(reward))
         self.framePrincipale.FrameEcranControle.AjouteScore(reward)
         self.framePrincipale.FrameEcranControle.Update()
+
+        
         
         return next_state, reward, done

@@ -8,7 +8,7 @@ class FrameDescription(Frame):
         self.framePrincipale = framePrincipale
 
         self.FrameDescription = LabelFrame(frame, text = "Description", bg="white", borderwidth=2, relief=GROOVE)
-        self.FrameDescription.pack(side=LEFT, padx=5, pady=5)
+        self.FrameDescription.pack(side=TOP, padx=5, pady=5)
 
         self.FrameDescriptionAgent = LabelFrame(self.FrameDescription, text = "Agent", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameDescriptionAgent.pack(side=TOP, padx=2, pady=2)
@@ -18,6 +18,9 @@ class FrameDescription(Frame):
 
         self.FrameDescriptionEnv = LabelFrame(self.FrameDescription, text = "Environnement", bg="white", borderwidth=2, relief=GROOVE)
         self.FrameDescriptionEnv.pack(side=TOP, padx=2, pady=2)
+
+        self.FrameDescriptionHRL = LabelFrame(self.FrameDescription, text="Recompenses HRL", bg="white", borderwidth=2, relief=GROOVE)
+        self.FrameDescriptionHRL.pack(side=TOP, padx=2, pady=2)
 
         # Descriptif agent
         descriptifAgent = "State size / Input size = " + str(self.env.state_size) + " \n" + \
@@ -54,3 +57,14 @@ class FrameDescription(Frame):
         descriptionEnvironnement = descriptionEnvironnement[:len(descriptionEnvironnement)-1]
         descriptionEnvironnementLabel = Label(self.FrameDescriptionEnv, text=descriptionEnvironnement, bg="white", justify="left")
         descriptionEnvironnementLabel.pack()
+
+
+        # REWARD HRL*
+        recomp_pos = 10/200
+        desc_rew_pos = "Reward positive HRL : " + str(recomp_pos)
+        reward_positive = Label(self.FrameDescriptionHRL, text=desc_rew_pos, bg="white")
+        reward_positive.pack()
+        recomp_neg = -10/200
+        desc_rew_neg = "Reward negative HRL : " + str(recomp_neg)
+        reward_negative = Label(self.FrameDescriptionHRL, text=desc_rew_neg, bg="white")
+        reward_negative.pack()

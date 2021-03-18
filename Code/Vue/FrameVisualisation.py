@@ -1,6 +1,6 @@
 from tkinter import *
 from Vue.FrameVisualisationState import FrameVisualisationState
-from Vue.FrameVisualisationControles import FrameVisualisationControles 
+from Vue.FrameVisualisationControles import  
 
 class FrameVisualisation(Frame):
     

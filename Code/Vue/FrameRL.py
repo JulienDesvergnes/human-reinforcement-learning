@@ -325,6 +325,7 @@ class FrameRL(Frame):
             for time in range(200):
                 action = self.agent.act(state)
                 predictions = self.agent.model.predict(state)
+                
                 next_state, reward, done = self.framePrincipale.FrameVisualisation.FrameVisualisationControles.UpdateAll(action)
                 next_state = next_state * (1 / float(self.env.state.grid_size))
                 next_state = np.reshape(next_state, [1, state_size])
@@ -349,13 +350,14 @@ class FrameRL(Frame):
                 self.var.set(0)
                 self.HumanActionButton1.wait_variable(self.var)
 
-                # Juge
+                # Juge automatique
                 # reward_human = 0
                 # if (self.distance(next_state) < self.distance(state)) :
                 #     reward_human =  10 / 200
                 # else :
                 #     reward_human = -6 / 200
 
+                #Juge manuel
                 reward_human = 0
                 if self.var.get() == 1 :
                     reward_human  = 10/200
